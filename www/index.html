@@ -103,11 +103,13 @@
           if (btnClicked.classList[0] !== 'button') { return }
           if (btnClicked === answerBtn) {
             console.log('Correct answer!')
+            btnList.innerHTML = ''
+            setQuiz()
           } else {
             console.log('Wrong answer sadface')
+            btnList.innerHTML = ''
+            setQuiz()
           }
-          btnList.innerHTML = ''
-          setQuiz()
         }
 
         function shuffle(array) {
