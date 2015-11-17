@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+    <title>Rainbow Rex | Colour Picker Game by Jared Tong</title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -21,21 +21,29 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
 
+    <style media="screen">
+      #btnList .button {
+        width:100vw;
+        height:40vh;
+        cursor:pointer;
+      }
+    </style>
+
   </head>
-  <body ng-app="starter">
+  <body ng-app="starter" ng-controller="MainController">
     <ion-pane>
       <ion-header-bar class="bar-stable bar-dark">
         <h1 class="title">RAINBOW REX</h1>
       </ion-header-bar>
       <ion-content>
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="console.log('HI')">
-        </ion-refresher>
+        <!-- <ion-refresher pulling-text="Pull to refresh" on-refresh="console.log('HI')">
+        </ion-refresher> -->
 
         <div class="card">
           <div class="item item-text-wrap">
             <div class="row">
-              <div class="col" style="text-align:center;"><h2>23</h2><br><small>points</small></div>
-              <div class="col" style="text-align:center;"><h2>{{ difficulty }}</h2></div>
+              <div class="col" style="text-align:center;"><h2 id="quizPoints">0</h2><br/><small> points</small></div>
+              <div class="col" style="text-align:center;"><h2 id="timer"></h2><br/><small>Time Left</small></div>
             </div>
 
             <!-- <input type="text" ng-model="rdmColour" name="colourGenerator" placeholder="Enter a colour here"> -->
@@ -47,95 +55,23 @@
             <h3 id="quizWord" style="color:red;text-align:center;font-size:5em;">green</h3>
           </div>
         </div>
-        <div class="card">
-          <div id="btnList" class="item item-text-wrap">
-
-          </div>
+        <div id="btnList" style="padding:0;display:flex;flex-direction:row;justify-content:space-between;"class="item item-text-wrap">
         </div>
+
+        <div id="losePixel" style="visibility:none;" ng-click="openModal()"></div>
       </ion-content>
     </ion-pane>
 
-    <script type="text/javascript">
-
-      function getColour() {
-        var bg_colour = Math.floor(Math.random() * 4815162342).toString(16)
-        bg_colour = "#" + ("000000" + bg_colour).slice(-6)
-        return bg_colour
-      }
-
-      function setQuiz() {
-        var quizWord = document.querySelector('#quizWord')
-        quizWord.style.color = getColour()
-        console.log('Color set to ' + quizWord.style.color)
-
-        var quizWordList = ['red', 'yellow', 'green', 'blue']
-        quizWord.textContent = quizWordList[Math.floor(Math.random()*quizWordList.length)]
-
-        var btnOrder = shuffle(['button-positive', 'button-balanced', 'button-energized', 'button-assertive'])
-        btnOrder.forEach(createBtn)
-
-        var btnList = document.querySelector('#btnList')
-        var answerBtn = findBtnMatch(quizWord)
-        btnList.addEventListener('click',checkAnswer,false)
-
-        function findBtnMatch(quizWord) {
-          var answerBtn;
-          switch (quizWord.textContent) {
-            case 'red':
-              answerBtn = document.querySelector('.button-assertive')
-              break;
-            case 'yellow':
-              answerBtn = document.querySelector('.button-energized')
-              break;
-            case 'green':
-              answerBtn = document.querySelector('.button-balanced')
-            case 'blue':
-              answerBtn = document.querySelector('.button-positive')
-            default:
-              break;
-          }
-          return answerBtn;
-        }
-
-        function checkAnswer(event) {
-          var btnClicked = event.target
-          console.log(btnClicked)
-          if (btnClicked.classList[0] !== 'button') { return }
-          if (btnClicked === answerBtn) {
-            console.log('Correct answer!')
-            btnList.innerHTML = ''
-            setQuiz()
-          } else {
-            console.log('Wrong answer sadface')
-            btnList.innerHTML = ''
-            setQuiz()
-          }
-        }
-
-        function shuffle(array) {
-          var currentIndex = array.length, temporaryValue, randomIndex ;
-          // While there remain elements to shuffle...
-          while (0 !== currentIndex) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-          }
-          return array;
-        }
-
-        function createBtn(colourClass) {
-          var btn = document.createElement('button')
-          btn.classList.add("button","button-block",colourClass)
-          document.querySelector('#btnList').appendChild(btn)
-        }
-
-      }
-
-      setQuiz()
+    <script id="lose-modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar>
+          <h1 id="loseModalScore">Your Score: <b>0</b></h1>
+        </ion-header-bar>
+        <ion-content>
+          Top Score: 200<br/><br/>
+          <button class="button button-block" ng-click="closeModal(); initGame(event)">Start New Game</button>
+        </ion-content>
+      </ion-modal-view>
     </script>
   </body>
 </html>
