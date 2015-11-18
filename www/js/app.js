@@ -44,7 +44,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
   $scope.initGame = function(event) {
     var quizStats = {
       'points': 0,
-      'roundDuration': 8
+      'roundDuration': 4,
+      'level': 1
     }
 
     // Prevent the click on loseModal btn to start new game from triggering the startTimer listener
@@ -60,7 +61,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     var countdownSpeed = null
     var roundTimerDisplay = document.querySelector('#timer')
     var highscore = $localStorage.get('highscore') || null
-    roundTimerDisplay.textContent = 8
+    roundTimerDisplay.textContent = 4
+    var timerBar = document.querySelector('#timerBar')
 
     function startNewRound () {
       // Set a random colour and colour name to quizWord
@@ -68,7 +70,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       quizWord.textContent = quizWordList[Math.floor(Math.random()*quizWordList.length)]
       console.log('NEW ROUND | ' + quizWord.textContent + ' set to ' + quizWord.style.color)
 
-      // Shuffle the buttons up before adding them to the DOM
+      // Shuffle the buttons up, clear the window, then add them to btnDisplay
       var btnOrder = shuffle(btnClassTypes)
       btnDisplay.innerHTML = ''
       btnOrder.forEach(createBtn)
@@ -134,7 +136,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       if (btnClicked.classList[0] !== 'button') { return }
       if (btnClicked === answerBtn) {
         quizStats.points += 1
-        quizStats.roundDuration += 0.5
+        quizStats.roundDuration += 1
         if (quizStats.roundDuration >= 8) { quizStats.roundDuration = 8 }
         quizPointsDisplay.textContent = quizStats.points
         console.log('WIN')
@@ -182,11 +184,19 @@ angular.module('starter', ['ionic', 'ionic.utils'])
 
     function roundTimer () {
       quizStats.roundDuration-= 1;
+      console.log(quizStats.roundDuration)
       if (quizStats.roundDuration <= 0) {
+        console.log('Out of time!')
         stopGame()
         return
       }
+      updateTimerBar()
       document.querySelector('#timer').textContent = quizStats.roundDuration
+    }
+
+    function updateTimerBar () {
+      timerBar.value = quizStats.roundDuration
+      console.log('Setting timer bar value to '+quizStats.roundDuration)
     }
 
     function startTimer () {

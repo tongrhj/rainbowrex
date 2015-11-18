@@ -20,12 +20,38 @@
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
+    <!-- For fancy progress bar <script src="js/pace.min.js"></script> -->
 
     <style media="screen">
       #btnList .button {
         width:100vw;
         height:40vh;
         cursor:pointer;
+      }
+
+      progress {
+        background: #EEE;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+        border-radius: 3px;
+      }
+
+      progress#timerBar[value] {
+        /* Reset the default appearance */
+        -webkit-appearance: none;
+        appearance: none;
+        width: 40vw;
+        height: 30px;
+      }
+
+      progress#timerBar[value]::-webkit-progress-value {
+        transition : width 5s ease;
+        background-color: #f44;
+        border-radius: 3px;
+        background-size: 35px 20px, 100% 100%, 100% 100%;
+        -webkit-transition : width 1s ease;
+        -moz-transition : width 1s ease;
+          -o-transition : width 1s ease;
+             transition : width 1s ease;
       }
     </style>
 
@@ -38,14 +64,26 @@
       <ion-content>
         <!-- <ion-refresher pulling-text="Pull to refresh" on-refresh="console.log('HI')">
         </ion-refresher> -->
+        <div class="row">
+          <div class="col">
+            <h2 id="quizPoints">0</h2>
+          </div>
 
-        <div class="card">
+          <div class="col col-50">
+            <progress max="8" value="4" id="timerBar"></progress>
+          </div>
+
+          <div class="col">
+
+          </div>
+        </div>
+
+        <div class="card" style="display:none;">
           <div class="item item-text-wrap">
             <div class="row">
-              <div class="col" style="text-align:center;"><h2 id="quizPoints">0</h2><br><small> points</small></div>
+              <div class="col" style="text-align:center;"></div>
               <div class="col" style="text-align:center;"><h2 id="timer"></h2><br><small>Time Left</small></div>
             </div>
-
             <!-- <input type="text" ng-model="rdmColour" name="colourGenerator" placeholder="Enter a colour here"> -->
           </div>
         </div>
@@ -68,7 +106,7 @@
           <h1 id="loseModalScore">Your Score: <b>0</b></h1>
         </ion-header-bar>
         <ion-content>
-          <h3 id="loseModalHighscoreLabel">Your Highscore:</h3><h3 id="loseModalHighscore">0</h3>
+          <h3 id="loseModalHighscoreLabel">Your Best: <span id="loseModalHighscore">0</h3>
           <br/><br/>
           <button class="button button-block" ng-click="closeModal(); initGame(event)">Start New Game</button>
         </ion-content>
