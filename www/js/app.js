@@ -3,9 +3,28 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('ionic.utils', [])
 
-.controller('MainController', function($scope, $ionicModal){
+.factory('$localStorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}]);
+
+angular.module('starter', ['ionic', 'ionic.utils'])
+
+.controller('MainController', function($scope, $ionicModal, $localStorage){
   $ionicModal.fromTemplateUrl('lose-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -25,7 +44,7 @@ angular.module('starter', ['ionic'])
   $scope.initGame = function(event) {
     var quizStats = {
       'points': 0,
-      'roundDuration': 60
+      'roundDuration': 8
     }
 
     // Prevent the click on loseModal btn to start new game from triggering the startTimer listener
@@ -40,7 +59,8 @@ angular.module('starter', ['ionic'])
     quizPointsDisplay.textContent = 0
     var countdownSpeed = null
     var roundTimerDisplay = document.querySelector('#timer')
-    roundTimerDisplay.textContent = 60
+    var highscore = $localStorage.get('highscore') || null
+    roundTimerDisplay.textContent = 8
 
     function startNewRound () {
       // Set a random colour and colour name to quizWord
@@ -114,6 +134,8 @@ angular.module('starter', ['ionic'])
       if (btnClicked.classList[0] !== 'button') { return }
       if (btnClicked === answerBtn) {
         quizStats.points += 1
+        quizStats.roundDuration += 0.5
+        if (quizStats.roundDuration >= 8) { quizStats.roundDuration = 8 }
         quizPointsDisplay.textContent = quizStats.points
         console.log('WIN')
         resetRound()
@@ -124,6 +146,24 @@ angular.module('starter', ['ionic'])
       }
     }
 
+    function checkHighscore () {
+      if (highscore !== null) {
+        if (quizStats.points > highscore) {
+          $localStorage.set('highscore', quizStats.points)
+          console.log('NEW HIGHSCORE ' + highscore + ' Your score: ' + quizStats.points)
+          document.querySelector('#loseModalHighscoreLabel').textContent = 'NEW HIGHSCORE'
+        } else {
+          console.log('NO NEW HIGHSCORE' + highscore + ' Your score: ' + quizStats.points)
+        }
+      } else {
+        $localStorage.set('highscore', quizStats.points)
+        console.log('FIRST HIGHSCORE EVER!' + highscore + ' Your score: ' + quizStats.points)
+        document.querySelector('#loseModalHighscoreLabel').textContent = 'FIRST HIGHSCORE'
+      }
+      highscore = $localStorage.get('highscore')
+      document.querySelector('#loseModalHighscore').textContent = highscore
+    }
+
     function stopGame() {
       // since i only know how to make the lose modal show on ng-click,
       // create an invisible losePixel that I trigger a click on to show lose modal
@@ -131,6 +171,7 @@ angular.module('starter', ['ionic'])
       stopTimer()
       var losePixel = document.querySelector('#losePixel')
       angular.element(losePixel).triggerHandler('click')
+      checkHighscore()
       document.querySelector('#loseModalScore b').textContent = quizStats.points
       resetRound()
     }
