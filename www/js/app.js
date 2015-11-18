@@ -69,6 +69,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     var quizWordColour
     var isRainbowRound = false
     var btnOrder
+    var previousQuizWord = null
 
     // Reset Displays
     quizPointsDisplay.textContent = 0
@@ -122,7 +123,9 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         }
         quizWord.style.color = quizWordColour
         isRainbowRound ? quizWord.textContent = rainbowList[Math.floor(Math.random() * rainbowList.length)] : quizWord.textContent = quizWordList[Math.floor(Math.random() * quizWordList.length)]
-        if (quizWord.style.color === quizWord.textContent) { generateQuizword() }
+        if ((quizWord.style.color === quizWord.textContent) ||
+            (previousQuizWord === quizWord.textContent)) { generateQuizword() }
+        previousQuizWord = quizWord.textContent
       }
     }
 
@@ -209,8 +212,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 30:
           console.log('Level 4')
           quizLevel = 4
-          countdownSpeed = 0.11
-          countdownAdd = 1.7
+          countdownSpeed = 0.1
+          countdownAdd = 2.0
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -219,8 +222,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 40:
           console.log('Level 5')
           quizLevel = 5
-          countdownSpeed = 0.12
-          countdownAdd = 1.7
+          countdownSpeed = 0.11
+          countdownAdd = 2.0
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -229,8 +232,28 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 50:
           console.log('Level 6')
           quizLevel = 6
+          countdownSpeed = 0.12
+          countdownAdd = 2.0
+          levelDisplay.textContent = quizLevel
+          var flipCoin = Math.floor(Math.random() * 2)
+          flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
+          console.log('isRainbowRound ' + isRainbowRound)
+          break
+        case 60:
+          console.log('Level 7')
+          quizLevel = 7
           countdownSpeed = 0.13
-          countdownAdd = 1.7
+          countdownAdd = 2.0
+          levelDisplay.textContent = quizLevel
+          var flipCoin = Math.floor(Math.random() * 2)
+          flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
+          console.log('isRainbowRound ' + isRainbowRound)
+          break
+        case 70:
+          console.log('Level 8')
+          quizLevel = 8
+          countdownSpeed = 0.14
+          countdownAdd = 2.0
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -279,8 +302,9 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       timeLeft -= countdownSpeed
       if (timeLeft <= 0) {
         console.log('Out of time!')
+        resetRound()
         timeLeft = 0
-        timerBar.addEventListener('transitionend', window.setTimeout(stopGame, 1000), true)
+        timerBar.addEventListener('transitionend', window.setTimeout(stopGame, 750), true)
         return
       }
       updateTimerBar()
