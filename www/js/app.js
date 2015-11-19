@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
 
     var quizWord = document.querySelector('#quizWord')
     var quizWordList = ['red', 'yellow', 'green', 'blue']
-    var rainbowList = ['red', 'yellow', 'orange', 'green', 'blue', 'indigo', 'violet' ]
+    var rainbowList = ['red', 'yellow', 'orange', 'green', 'blue', 'purple', 'pink' ]
     var btnDisplay = document.querySelector('#btnList')
     var answerBtn
     var quizPointsDisplay = document.querySelector('#quizPoints')
@@ -88,7 +88,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       btnOrder.forEach(createBtn)
       function createBtn (colourClass) {
         var btn = document.createElement('button')
-        btn.classList.add('button', 'button-'+colourClass)
+        btn.classList.add('button', 'button-' + colourClass)
         btnDisplay.appendChild(btn)
       }
 
@@ -146,11 +146,11 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 'orange':
           answerBtn = document.querySelector('.button-orange')
           break
-        case 'violet':
-          answerBtn = document.querySelector('.button-violet')
+        case 'pink':
+          answerBtn = document.querySelector('.button-pink')
           break
-        case 'indigo':
-          answerBtn = document.querySelector('.button-indigo')
+        case 'purple':
+          answerBtn = document.querySelector('.button-purple')
           break
         default:
           break
@@ -192,7 +192,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 10:
           console.log('Level 2')
           quizLevel = 2
-          countdownSpeed = 0.07
+          countdownSpeed = 0.06
           countdownAdd = 1.4
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
@@ -202,7 +202,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 20:
           console.log('Level 3')
           quizLevel = 3
-          countdownSpeed = 0.09
+          countdownSpeed = 0.07
           countdownAdd = 1.4
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
@@ -212,8 +212,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 30:
           console.log('Level 4')
           quizLevel = 4
-          countdownSpeed = 0.1
-          countdownAdd = 2.0
+          countdownSpeed = 0.08
+          countdownAdd = 1.4
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -222,8 +222,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 40:
           console.log('Level 5')
           quizLevel = 5
-          countdownSpeed = 0.11
-          countdownAdd = 2.0
+          countdownSpeed = 0.09
+          countdownAdd = 1.6
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -232,8 +232,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 50:
           console.log('Level 6')
           quizLevel = 6
-          countdownSpeed = 0.12
-          countdownAdd = 2.0
+          countdownSpeed = 0.09
+          countdownAdd = 1.6
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -242,8 +242,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 60:
           console.log('Level 7')
           quizLevel = 7
-          countdownSpeed = 0.13
-          countdownAdd = 2.0
+          countdownSpeed = 0.1
+          countdownAdd = 1.8
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
@@ -252,8 +252,18 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         case 70:
           console.log('Level 8')
           quizLevel = 8
-          countdownSpeed = 0.14
-          countdownAdd = 2.0
+          countdownSpeed = 0.11
+          countdownAdd = 1.9
+          levelDisplay.textContent = quizLevel
+          var flipCoin = Math.floor(Math.random() * 2)
+          flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
+          console.log('isRainbowRound ' + isRainbowRound)
+          break
+        case 80:
+          console.log('Level 9')
+          quizLevel = 9
+          countdownSpeed = 0.12
+          countdownAdd = 2
           levelDisplay.textContent = quizLevel
           var flipCoin = Math.floor(Math.random() * 2)
           flipCoin === 1 ? isRainbowRound = true : isRainbowRound = false
