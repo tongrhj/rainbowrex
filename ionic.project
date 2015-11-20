@@ -1,4 +1,5 @@
 {
-  "name": "myApp",
-  "app_id": "67cdf046"
+  "name": "rainbowRex",
+  "app_id": "67cdf046",
+  "gulpStartupTasks" : ["babel", "copy-images"]
 }

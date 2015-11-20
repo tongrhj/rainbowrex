@@ -18,14 +18,20 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
+    <!-- My App's JS -->
     <script src="js/app.js"></script>
+
+    </script>
     <!-- For fancy progress bar <script src="js/pace.min.js"></script> -->
 
     <style media="screen">
+      body {
+        letter-spacing: 3px;
+        line-height: 0.75em;
+      }
+
       #btnList .button {
         width:100%;
-        height:40vh;
         cursor:pointer;
       }
 
@@ -66,20 +72,206 @@
       .button.button-pink{background-color: pink;border-color: pink;}
       .button.button-purple{background-color: purple;border-color: purple;}
 
-      /*progress::-webkit-progress-bar { background: #fff; }
-      progress::-webkit-progress-value { background: #0063a6; }*/
+      .modal-backdrop-bg {
+        -webkit-transition: opacity 300ms ease-in-out;
+        transition: opacity 300ms ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+      }
+
+      .active .modal-backdrop-bg {
+        opacity: 0.5;
+      }
+
+      .modal {
+        width: 90vw;
+        min-height: 50vh;
+        left: 5vw;
+        top: 20vh;
+        border-radius: 50%;
+        border: 10px solid black;
+      }
+
+      .gameOver, .splashscreen {
+        display: block;
+        position: absolute;
+        top: 0;
+        z-index: 10;
+        overflow: hidden;
+        min-height: 100%;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.97);
+      }
+
+      .pane.gameOver {
+        display:none;
+        opacity:0;
+        transition: opacity 100ms ease;
+      }
+
+      .pane.gameOver.becomeVisible {
+        display: block;
+        opacity:100;
+      }
+
+      .splashscreen h1 {
+        font-size:4em;
+        font-weight:700;
+      }
+
+      .gameTitle {
+        position:absolute;
+        left:40vw;
+        top:15vh;
+        z-index:12;
+        letter-spacing: 3px;
+        line-height:0.8em;
+      }
+
+      .rexBox {
+        transform: rotate(20deg);
+        -webkit-transform: rotate(20deg);
+        transform-origin: 0 -250px;
+        position: absolute;
+        left: 30vw;
+        z-index: 100;
+      }
+
+      .rexLegs {
+        top: calc(40vh + 145px/3 );
+        left:calc(10vw + 400px/6);
+        z-index:20;
+        animation: 1s ease infinite legsMove;
+        width: calc(142px /3);
+        height: calc(102px /3);
+
+       }
+
+       .splashscreen img {
+         position: absolute;
+       }
+
+       .rexBody {
+        top: 40vh;
+        left: 10vw;
+        /* Animation properties to be added here */
+        animation: 1s ease infinite bodyBounce;
+        z-index:21;
+        width: calc(467px /3);
+        height: calc(205px /3);
+       }
+
+       .rainbow {
+        width:2000px;
+        height:50px;
+        z-index: 11;
+
+        top: calc(40vh + 25px);
+        left: 30vw;
+
+        background-size: 50% auto;
+        background-image: -webkit-linear-gradient( left, red, orange, yellow, green, blue, indigo, violet, red );
+        animation: wheeeee 1s linear infinite forwards;
+        transform: rotate(15deg);
+        -webkit-transform: rotate(15deg);
+        transform-origin: 0 -250px;
+        opacity: 1;
+        position: absolute;
+       }
+
+       .vanishFast {
+         animation: vanish 300ms ease;
+       }
+
+       .appearFast {
+         animation: appear 1000ms ease;
+       }
+
+       @keyframes bodyBounce {
+        0% { transform: translateY(6px); }
+        50% { transform: translateY(0px); }
+        100% { transform: translateY(6px); }
+       }
+
+       @keyframes legsMove {
+        0% { transform: translateX(0px); }
+        50% { transform: translateX(3px); }
+        100% { transform: translateX(0px); }
+       }
+
+       @keyframes wheeeee {
+         from { background-position: top left; }
+         to { background-position: top right; }
+       }
+
+       @keyframes appear {
+         from {opacity: 0 }
+         to {opacity: 1 }
+       }
+
+       @keyframes vanish {
+         from {opacity: 1}
+         to {opacity: 0 }
+       }
+
+       #gameView {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        justify-content: space-between;
+       }
+
+       .finalScoreDisplay {
+         text-align:center;
+         margin: 0 auto;
+         width: 400px;
+         height: 400px;
+         border-radius: 50%;
+         background-color: black;
+         color: white;
+         position: absolute;
+        top: calc(50vh - 200px);
+        left: calc(50vw - 200px);
+        vertical-align: middle;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+       }
+
+       .finalScoreDisplay h1, .finalScoreDisplay h3 {
+         color: white;
+         vertical-align: middle;
+       }
 
     </style>
 
   </head>
   <body ng-app="starter" ng-controller="MainController">
-    <ion-pane>
-      <ion-header-bar class="bar-stable bar-dark">
-        <h1 class="title">RAINBOW REX</h1>
-      </ion-header-bar>
-      <ion-content>
-        <!-- <ion-refresher pulling-text="Pull to refresh" on-refresh="console.log('HI')">
-        </ion-refresher> -->
+
+    <!-- Splashscreen Modal -->
+    <ion-pane class="splashscreen">
+      <div class="rexBox">
+        <img class="rexBody" src="img/rexbody.png" />
+        <img class="rexLegs" src="img/rexlegs.png" />
+      </div>
+      <div class="rainbow">
+      </div>
+      <div class="gameTitle">
+        <h1> Rainbow <br/> Rex </h1>
+        <h2>I WANTS THE COLOUR YOU READ</h2>
+      </div>
+    </ion-pane>
+
+    <!-- Game Over Modal -->
+    <ion-pane class="gameOver">
+      <div class="finalScoreDisplay">
+        <h1 id="loseModalScore">Your Score: <br/> <b>0</b></h1>
+        <h3 id="loseModalHighscoreLabel">Your Best: </h3><h3 id="loseModalHighscore">0</h3>
+      </div>
+    </ion-pane>
+
+    <!-- Game View -->
+    <ion-pane id="gameView">
         <div class="row">
           <div class="col">
             <h2 id="quizPoints">0</h2>
@@ -94,39 +286,15 @@
           </div>
         </div>
 
-        <div class="card" style="display:none;">
-          <div class="item item-text-wrap">
-            <div class="row">
-              <div class="col" style="text-align:center;"></div>
-              <div class="col" style="text-align:center;"><h2 id="timer"></h2><br><small>Time Left</small></div>
-            </div>
-            <!-- <input type="text" ng-model="rdmColour" name="colourGenerator" placeholder="Enter a colour here"> -->
-          </div>
-        </div>
-
         <div class="card">
           <div class="item item-text-wrap">
             <h3 id="quizWord" style="color:red;text-align:center;font-size:5em;">green</h3>
           </div>
         </div>
-        <div id="btnList" style="padding:0;display:flex;flex-direction:row;justify-content:space-between;" class="item item-text-wrap">
+        <div id="btnList" style="flex-grow:100;padding:0;display:flex;flex-direction:row;justify-content:space-between;" class="item item-text-wrap">
         </div>
 
-        <div id="losePixel" style="visibility:none;" ng-click="openModal()"></div>
-      </ion-content>
     </ion-pane>
 
-    <script id="lose-modal.html" type="text/ng-template">
-      <ion-modal-view>
-        <ion-header-bar>
-          <h1 id="loseModalScore">Your Score: <b>0</b></h1>
-        </ion-header-bar>
-        <ion-content>
-          <h3 id="loseModalHighscoreLabel">Your Best: </h3><h3 id="loseModalHighscore">0</h3>
-          <br/><br/>
-          <button class="button button-block" ng-click="closeModal(); initGame(event)">Start New Game</button>
-        </ion-content>
-      </ion-modal-view>
-    </script>
   </body>
 </html>

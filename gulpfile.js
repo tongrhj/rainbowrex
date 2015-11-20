@@ -6,12 +6,13 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var babel = require('gulp-babel');
 
 var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['sass', 'copy-images', 'babel']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -25,6 +26,19 @@ gulp.task('sass', function(done) {
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
+
+gulp.task('copy-images', function() {
+    gulp.src('./img/*.png')
+    // Perform minification tasks, etc here
+    .pipe(gulp.dest('./www/img/'))
+});
+
+gulp.task('babel', function(done){
+  gulp.src('./js/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest('./www/js/'))
+    .on('end', done);
+})
 
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
