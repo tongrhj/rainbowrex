@@ -368,6 +368,12 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     }
 
     function resetGame() {
+      quizStats = {
+        'points': 0,
+        'roundDuration': 4,
+        'level': 1
+      };
+
       quizWord = document.querySelector('#quizWord');
       quizWordList = ['red', 'yellow', 'green', 'blue'];
       rainbowList = ['red', 'yellow', 'orange', 'green', 'blue', 'purple', 'pink'];
