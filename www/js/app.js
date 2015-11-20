@@ -1,9 +1,3 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-
 'use strict';
 
 angular.module('ionic.utils', []).factory('$localStorage', ['$window', function ($window) {
@@ -77,8 +71,10 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     function removeSplashscreen() {
       splashscreen.removeEventListener('click');
       splashscreen.classList.add('vanishFast');
+      document.querySelector('.rexOnRainbow').classList.add('slideOutFast');
       splashscreen.addEventListener('animationend', function () {
         splashscreen.classList.remove('vanishFast');
+        document.querySelector('.rexOnRainbow').classList.remove('slideOutFast');
         splashscreen.parentNode.removeChild(splashscreen);
         console.log('Splashscreen vanished');
       });
@@ -309,8 +305,6 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       gameOver.classList.add('appearFast', 'becomeVisible');
       checkHighscore();
       document.querySelector('#loseModalScore b').textContent = quizStats.points;
-      // var losePixel = document.querySelector('#losePixel')
-      // angular.element(losePixel).triggerHandler('click')
       gameOver.addEventListener('animationend', function () {
         gameOver.addEventListener('click', hideGameOver);
         console.log('Adding event listener to hideGameOver');
@@ -320,10 +314,6 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     function hideGameOver() {
       gameOver.classList.remove('appearFast', 'becomeVisible');
       gameOver.removeEventListener('click', hideGameOver);
-      // gameOver.addEventListener('animationend', function () {
-      //   gameOver.classList.remove('vanishFast')
-      //   console.log('Hiding Game Over Modal')
-      // })
       resetRound();
       resetGame();
       startNewRound();
@@ -383,8 +373,9 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       countdown = null;
 
       // Instance of ES6 Destructuring
-      timeLeft = quizStats.roundDuration;
-      quizLevel = quizStats.level;
+      var _quizStats = quizStats;
+      var timeLeft = _quizStats.roundDurationtimeLeft;
+      var quizLevel = _quizStats.level;
       // var timeLeft = quizStats.roundDuration
       // var quizLevel = quizStats.level
 
@@ -405,7 +396,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       // Reset Displays
       quizPointsDisplay.textContent = 0;
       updateTimerBar();
-      levelDisplay.textContenst = quizLevel;
+      levelDisplay.textContent = quizLevel;
 
       // Start new countdown on button click
       btnDisplay.addEventListener('click', startTimer, false);

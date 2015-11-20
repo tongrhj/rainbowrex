@@ -1,14 +1,23 @@
 Rainbow Rex
 =====================
 
-A fast-paced :rainbow: colour picker game by @tongrhj
+An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 [Play in Browser](http://rainbowrex.herokuapp.com)
 
-## Using this project
+## To Install
+
+```
+npm install
+```
+
+## To build local server with watch HTML and CSS
 
 ```bash
 $ ionic serve
 ```
 
-## Issues
-Submit issues on Github
+## Product Roadmap:
+1. Implement watchify and browserify for JS into ionic serve command
+2. Overhaul UI
+3. Include loading splashscreen for Android app
+4. Port to iOS

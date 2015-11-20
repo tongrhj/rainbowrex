@@ -22,7 +22,6 @@
     <script src="js/app.js"></script>
 
     </script>
-    <!-- For fancy progress bar <script src="js/pace.min.js"></script> -->
 
     <style media="screen">
       body {
@@ -120,31 +119,37 @@
       }
 
       .gameTitle {
-        position:absolute;
-        left:40vw;
-        top:15vh;
+        padding: 2em;
+        margin-top: 3em;
         z-index:12;
         letter-spacing: 3px;
         line-height:0.8em;
       }
 
       .rexBox {
-        transform: rotate(20deg);
-        -webkit-transform: rotate(20deg);
-        transform-origin: 0 -250px;
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
         position: absolute;
-        left: 30vw;
+        left: 50vw;
+        bottom: 420px;
         z-index: 100;
       }
 
       .rexLegs {
+        position:absolute;
         top: calc(40vh + 145px/3 );
         left:calc(10vw + 400px/6);
         z-index:20;
-        animation: 1s ease infinite legsMove;
-        width: calc(142px /3);
+        /*animation: 1s ease infinite legsMove;*/
+        width: 47px;
         height: calc(102px /3);
+        background: url('img/rexlegssprite.png') left center;
+        background-size: 400%;
+        animation: play 600ms steps(4) infinite;
+       }
 
+       @keyframes play {
+         100% { background-position: 568px; }
        }
 
        .splashscreen img {
@@ -152,6 +157,7 @@
        }
 
        .rexBody {
+        position:absolute;
         top: 40vh;
         left: 10vw;
         /* Animation properties to be added here */
@@ -166,15 +172,12 @@
         height:50px;
         z-index: 11;
 
-        top: calc(40vh + 25px);
-        left: 30vw;
+        bottom:0;
 
         background-size: 50% auto;
         background-image: -webkit-linear-gradient( left, red, orange, yellow, green, blue, indigo, violet, red );
-        animation: wheeeee 1s linear infinite forwards;
-        transform: rotate(15deg);
-        -webkit-transform: rotate(15deg);
-        transform-origin: 0 -250px;
+        animation: wheeeee 1200ms linear infinite forwards;
+
         opacity: 1;
         position: absolute;
        }
@@ -214,6 +217,11 @@
          to {opacity: 0 }
        }
 
+       @keyframes slideOutBottom {
+         from {transform: translateY(0px)}
+         to {transform: translateY(300px) }
+       }
+
        #gameView {
         display: flex;
         flex-direction: column;
@@ -243,6 +251,23 @@
          vertical-align: middle;
        }
 
+       #gameView h2 {
+         font-size: 24px;
+       }
+
+       #gameView h2#quizPoints {
+         font-size:52px;
+       }
+
+       .rexOnRainbow {
+         position: absolute;
+         bottom: 0;
+       }
+
+       .slideOutFast {
+        animation: slideOutBottom 300ms linear;
+       }
+
     </style>
 
   </head>
@@ -250,15 +275,17 @@
 
     <!-- Splashscreen Modal -->
     <ion-pane class="splashscreen">
-      <div class="rexBox">
-        <img class="rexBody" src="img/rexbody.png" />
-        <img class="rexLegs" src="img/rexlegs.png" />
-      </div>
-      <div class="rainbow">
-      </div>
       <div class="gameTitle">
         <h1> Rainbow <br/> Rex </h1>
         <h2>I WANTS THE COLOUR YOU READ</h2>
+      </div>
+      <div class="rexOnRainbow">
+        <div class="rexBox">
+          <img class="rexBody" src="img/rexbody.png" />
+          <div class="rexLegs"></div>
+        </div>
+        <div class="rainbow">
+        </div>
       </div>
     </ion-pane>
 
