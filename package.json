@@ -2,10 +2,6 @@
   "name": "rainbowRex",
   "version": "1.0.0",
   "description": "Colour Picker Game by Jared Tong",
-  "scripts": {
-    "gulp" : "gulp",
-    "dev": "npm run gulp && ionic serve"
-  },
   "dependencies": {
     "babel-preset-es2015": "^6.1.18",
     "babelify": "^7.2.0",
