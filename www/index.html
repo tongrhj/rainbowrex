@@ -127,44 +127,42 @@
       }
 
       .rexBox {
-        transform: rotate(5deg);
-        -webkit-transform: rotate(5deg);
         position: absolute;
-        left: 50vw;
-        bottom: 420px;
+        right: 10px;
+        bottom: 50px;
         z-index: 100;
+        width:200px;
+        height:100px;
       }
 
       .rexLegs {
         position:absolute;
-        top: calc(40vh + 145px/3 );
-        left:calc(10vw + 400px/6);
+        /*top: calc(40vh + 145px/3 );
+        left:calc(10vw + 400px/6);*/
         z-index:20;
-        /*animation: 1s ease infinite legsMove;*/
         width: 47px;
-        height: calc(102px /3);
+        bottom:0;
+        right:80px;
+        height: calc(100px /3);
         background: url('img/rexlegssprite.png') left center;
         background-size: 400%;
-        animation: play 600ms steps(4) infinite;
+        animation: moveLegs 600ms steps(4) infinite;
        }
 
-       @keyframes play {
+       @keyframes moveLegs {
          100% { background-position: 568px; }
        }
 
+      .rexBody {
+       animation: 1s ease infinite bodyBounce;
+       bottom: 13px;
+       z-index:21;
+       width: calc(467px /3);
+       height: calc(205px /3);
+      }
+
        .splashscreen img {
          position: absolute;
-       }
-
-       .rexBody {
-        position:absolute;
-        top: 40vh;
-        left: 10vw;
-        /* Animation properties to be added here */
-        animation: 1s ease infinite bodyBounce;
-        z-index:21;
-        width: calc(467px /3);
-        height: calc(205px /3);
        }
 
        .rainbow {
@@ -194,12 +192,6 @@
         0% { transform: translateY(6px); }
         50% { transform: translateY(0px); }
         100% { transform: translateY(6px); }
-       }
-
-       @keyframes legsMove {
-        0% { transform: translateX(0px); }
-        50% { transform: translateX(3px); }
-        100% { transform: translateX(0px); }
        }
 
        @keyframes wheeeee {
@@ -252,16 +244,18 @@
        }
 
        #gameView h2 {
-         font-size: 24px;
+         font-size: 22px;
        }
 
        #gameView h2#quizPoints {
-         font-size:52px;
+         font-size:32px;
        }
 
        .rexOnRainbow {
          position: absolute;
          bottom: 0;
+         height: 100%;
+         width: 100%;
        }
 
        .slideOutFast {

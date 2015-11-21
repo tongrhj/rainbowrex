@@ -39,8 +39,9 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     var countdown = null;
 
     // Instance of ES6 Destructuring
-    var timeLeft = quizStats.roundDuration;
-    var quizLevel = quizStats.level;
+    var _quizStats = quizStats;
+    var timeLeft = _quizStats.roundDuration;
+    var quizLevel = _quizStats.level;
     // var timeLeft = quizStats.roundDuration
     // var quizLevel = quizStats.level
 
@@ -73,8 +74,8 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       splashscreen.classList.add('vanishFast');
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast');
       splashscreen.addEventListener('animationend', function () {
-        splashscreen.classList.remove('vanishFast');
         document.querySelector('.rexOnRainbow').classList.remove('slideOutFast');
+        splashscreen.classList.remove('vanishFast');
         splashscreen.parentNode.removeChild(splashscreen);
         console.log('Splashscreen vanished');
       });
@@ -298,8 +299,6 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     }
 
     function stopGame() {
-      // since i only know how to make the lose modal show on ng-click,
-      // create an invisible losePixel that I trigger a click on to show lose modal
       document.querySelector('body').removeEventListener('click', startTimer);
       stopTimer();
       gameOver.classList.add('appearFast', 'becomeVisible');
@@ -336,7 +335,6 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     }
 
     function updateTimerBar() {
-      // Still Need to figure out how to make the timer bar FLASH when player receives additional time (ie. timeLeft++ )
       if (timerBar.value < timeLeft) {
         console.log(timeLeft);
         timerBar.classList.add('whitebg');
@@ -345,7 +343,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
         });
       }
       timerBar.value = timeLeft;
-      // console.log('Setting timer bar value to '+timeLeft)
+      console.log('Setting timer bar value to ' + timeLeft);
     }
 
     function startTimer() {
@@ -373,9 +371,8 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       countdown = null;
 
       // Instance of ES6 Destructuring
-      var _quizStats = quizStats;
-      var timeLeft = _quizStats.roundDurationtimeLeft;
-      var quizLevel = _quizStats.level;
+      timeLeft = quizStats.roundDuration;
+      quizLevel = quizStats.level;
       // var timeLeft = quizStats.roundDuration
       // var quizLevel = quizStats.level
 
