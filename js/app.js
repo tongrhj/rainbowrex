@@ -73,7 +73,6 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       splashscreen.classList.add('vanishFast')
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast')
       splashscreen.addEventListener('animationend', function () {
-        document.querySelector('.rexOnRainbow').classList.remove('slideOutFast')
         splashscreen.classList.remove('vanishFast')
         splashscreen.parentNode.removeChild(splashscreen)
         console.log('Splashscreen vanished')
@@ -121,7 +120,12 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         } else if (isRainbowRound) {
           quizWordColour = rainbowList[Math.floor(Math.random() * rainbowList.length)]
         } else {
-          var colour = Math.floor(Math.random() * 4815162342).toString(16)
+          var r = Math.floor((Math.random() * 194) + 1) + 60
+  	      var g = Math.floor((Math.random() * 194) + 1) + 60
+		      var b = Math.floor((Math.random() * 194) + 1) + 60
+
+          var colour = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+          // var colour = Math.floor(Math.random() * 4815162342).toString(16)
           quizWordColour = '#' + ('000000' + colour).slice(-6)
         }
         quizWord.style.color = quizWordColour
@@ -174,6 +178,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       if (btnClicked === answerBtn) {
         isRainbowRound ? quizStats.points += 7 : quizStats.points += 1
         quizPointsDisplay.textContent = quizStats.points
+        quizPointsDisplay.classList.add('boomsz')
+        setTimeout(function() { quizPointsDisplay.classList.remove('boomsz') }, 100)
 
         // reset to isRainbowRound flag must come before determineLevel when flag is determined again
         isRainbowRound = false
@@ -199,81 +205,28 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       function flipCoin () {
         return Math.floor(Math.random() * 2)
       }
-      switch (quizStats.points) {
-        case 10:
-          console.log('Level 2')
-          quizLevel = 2
-          countdownSpeed = 0.06
-          countdownAdd = 1.4
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 20:
-          console.log('Level 3')
-          quizLevel = 3
-          countdownSpeed = 0.07
-          countdownAdd = 1.4
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 30:
-          console.log('Level 4')
-          quizLevel = 4
-          countdownSpeed = 0.08
-          countdownAdd = 1.4
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 40:
-          console.log('Level 5')
-          quizLevel = 5
-          countdownSpeed = 0.09
-          countdownAdd = 1.6
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 50:
-          console.log('Level 6')
-          quizLevel = 6
-          countdownSpeed = 0.09
-          countdownAdd = 1.6
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 60:
-          console.log('Level 7')
-          quizLevel = 7
-          countdownSpeed = 0.1
-          countdownAdd = 1.8
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 70:
-          console.log('Level 8')
-          quizLevel = 8
-          countdownSpeed = 0.11
-          countdownAdd = 1.9
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        case 80:
-          console.log('Level 9')
-          quizLevel = 9
-          countdownSpeed = 0.12
-          countdownAdd = 2
-          levelDisplay.textContent = quizLevel
-          flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
-          console.log('isRainbowRound ' + isRainbowRound)
-          break
-        default:
-          break
+
+      if (quizStats.points >= (quizLevel * 20)) {
+        quizLevel = quizLevel + 1
+        console.log('Increased to Level '+quizLevel)
+
+        flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
+        console.log('Next round is a rainbow round:' + isRainbowRound)
+
+        levelDisplay.textContent = quizLevel
+        levelDisplay.classList.add('boomsz')
+        setTimeout(function() { levelDisplay.classList.remove('boomsz') }, 100)
+
+        if (quizLevel === 2) { countdownSpeed = 0.06; countdownAdd = 1.4 }
+        if (quizLevel === 3) { countdownSpeed = 0.07; countdownAdd = 1.4 }
+        if (quizLevel === 4) { countdownSpeed = 0.08; countdownAdd = 1.6 }
+        if (quizLevel === 5) { countdownSpeed = 0.09; countdownAdd = 1.6 }
+        if (quizLevel === 6) { countdownSpeed = 0.10; countdownAdd = 1.6 }
+        if (quizLevel === 7) { countdownSpeed = 0.11; countdownAdd = 1.6 }
+        if (quizLevel === 8) { countdownSpeed = 0.112; countdownAdd = 1.6 }
+        if (quizLevel === 9) { countdownSpeed = 0.115; countdownAdd = 1.6 }
+        if (quizLevel === 10) { countdownSpeed = 0.12; countdownAdd = 1.6 }
+        if (quizLevel === 15) { countdownSpeed = 0.14; countdownAdd = 1.6 }
       }
     }
 

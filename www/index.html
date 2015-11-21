@@ -8,6 +8,8 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- Indebted to http://colorrun.pl/ and Timberman and Crossy Road -->
+
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -24,8 +26,9 @@
     </script>
 
     <style media="screen">
+
       body {
-        letter-spacing: 3px;
+        letter-spacing: -2px;
         line-height: 0.75em;
       }
 
@@ -38,6 +41,7 @@
         background: #EEE;
         box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
         border-radius: 3px;
+        border: 3px solid rgba(0,0,0,0.7);
       }
 
       progress#timerBar[value] {
@@ -63,13 +67,13 @@
         background-color: #fff;
       }
 
-      .button.button-red{background-color: red;border-color: red;}
-      .button.button-blue{background-color: blue;border-color: blue;}
-      .button.button-yellow{background-color: yellow;border-color: yellow;}
-      .button.button-orange{background-color: orange;border-color: orange;}
-      .button.button-green{background-color: green;border-color: green;}
-      .button.button-pink{background-color: pink;border-color: pink;}
-      .button.button-purple{background-color: purple;border-color: purple;}
+      .button.button-red{background-color: #D75548;border-color: #D75548;}
+      .button.button-blue{background-color: #5D86C4;border-color: #5D86C4;}
+      .button.button-yellow{background-color: #EDC662;border-color: #EDC662;}
+      .button.button-orange{background-color: #ED841B;border-color: #ED841B;}
+      .button.button-green{background-color: #5AA159;border-color: #5AA159;}
+      .button.button-pink{background-color: #FF99FF;border-color: #FF99FF;}
+      .button.button-purple{background-color: #824FBF;border-color: #824FBF;}
 
       .modal-backdrop-bg {
         -webkit-transition: opacity 300ms ease-in-out;
@@ -245,10 +249,7 @@
 
        #gameView h2 {
          font-size: 22px;
-       }
-
-       #gameView h2#quizPoints {
-         font-size:32px;
+         color: white;
        }
 
        .rexOnRainbow {
@@ -260,6 +261,23 @@
 
        .slideOutFast {
         animation: slideOutBottom 300ms linear;
+       }
+
+       .boomsz {
+         transform: scale(1.2);
+	       -webkit-transform: scale(1.2);
+       }
+
+       #levelDisplay, #quizPoints {
+         transition: all 0.1s;
+         -webkit-transition: all 0.1s;
+       }
+
+       #gameView h2#quizPoints {
+         text-shadow: 0 2px 1px rgba(0,0,0,0.2),0 -2px 1px rgba(0,0,0,0.1);
+         color: #f1ebe5;
+         font-weight: 700;
+         font-size: 40px;
        }
 
     </style>
@@ -293,7 +311,8 @@
 
     <!-- Game View -->
     <ion-pane id="gameView">
-        <div class="row">
+
+        <div class="row" style="position: absolute;z-index: 5;">
           <div class="col">
             <h2 id="quizPoints">0</h2>
           </div>
@@ -307,13 +326,14 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="item item-text-wrap">
-            <h3 id="quizWord" style="color:red;text-align:center;font-size:5em;">green</h3>
-          </div>
+      <div class="card" style="z-index:4;position:absolute;margin-left: 15px;margin-top: 90px;width: calc(100vw - 30px);">
+        <div class="item item-text-wrap">
+          <h3 id="quizWord" style="color:red;text-align:center;font-size:5em;">green</h3>
         </div>
-        <div id="btnList" style="flex-grow:100;padding:0;display:flex;flex-direction:row;justify-content:space-between;" class="item item-text-wrap">
-        </div>
+      </div>
+
+      <div id="btnList" style="z-index:3;flex-grow:100;padding:0;display:flex;flex-direction:row;justify-content:space-between;" class="item item-text-wrap">
+      </div>
 
     </ion-pane>
 
