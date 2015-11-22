@@ -64,7 +64,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     levelDisplay.textContent = quizLevel
 
     function startSplashscreen () {
-      splashscreen.addEventListener('click', removeSplashscreen, false)
+      splashscreen.addEventListener('click', removeSplashscreen)
       startNewRound()
     }
 
@@ -90,7 +90,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       btnOrder.forEach(createBtn)
       function createBtn (colourClass) {
         var btn = document.createElement('button')
-        btn.classList.add('button', 'button-' + colourClass)
+        btn.classList.add('button-' + colourClass)
         btnDisplay.appendChild(btn)
       }
 
@@ -172,9 +172,9 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       var btnClicked = event.target
       console.log('Button clicked: ')
       console.log(btnClicked)
-      if (btnClicked.classList[0] !== 'button') {
-        return
-      }
+      // if (btnClicked.classList[0] !== 'button') {
+      //   return
+      // }
       if (btnClicked === answerBtn) {
         isRainbowRound ? quizStats.points += 7 : quizStats.points += 1
         quizPointsDisplay.textContent = quizStats.points
