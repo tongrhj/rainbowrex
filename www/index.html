@@ -37,6 +37,11 @@
         cursor:pointer;
         border: none;
         border-radius: 0px;
+        opacity: 1;
+      }
+
+      #btnList button:active {
+        opacity: 0.7;
       }
 
       progress {
@@ -97,7 +102,7 @@
         border: 10px solid black;
       }
 
-      .gameOver, .splashscreen {
+      .gameOver, .splashscreen, .pauseScreen {
         display: block;
         position: absolute;
         top: 0;
@@ -108,15 +113,15 @@
         background-color: rgba(255, 255, 255, 0.70);
       }
 
-      .pane.gameOver {
+      .pane.gameOver, .pane.pauseScreen {
         display:none;
         opacity:0;
         transition: opacity 100ms ease;
       }
 
-      .pane.gameOver.becomeVisible {
-        display: block;
-        opacity:100;
+      .becomeVisible {
+        display: block !important;
+        opacity:100 !important;
       }
 
       .splashscreen h1 {
@@ -177,6 +182,10 @@
 
        .vanishFast {
          animation: vanish 300ms ease;
+       }
+
+       .vanishSlow {
+         animation: vanish 1000ms ease;
        }
 
        .appearFast {
@@ -270,6 +279,40 @@
          font-size: 40px;
        }
 
+      #pauseBtn {
+        position:absolute;
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+        z-index:5;
+        border: none;
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 50%;
+        text-indent: -9999px;
+        cursor:pointer;
+      }
+
+      #pauseBtn:before {
+        width: 6px;
+        height: 15px;
+        background: #fff;
+        position: absolute;
+        content: "";
+        top: 17px;
+        left: 15px;
+      }
+
+      #pauseBtn:after {
+        width: 6px;
+        height: 15px;
+        background: #fff;
+        position: absolute;
+        content: "";
+        top: 17px;
+        right: 15px;
+      }
+
     </style>
 
   </head>
@@ -301,6 +344,13 @@
       </div>
     </ion-pane>
 
+    <!-- Pause Modal -->
+    <ion-pane class="pauseScreen" style="z-index:101;background-color:rgba(255,255,255,0.7)">
+      <div class="card" style="z-index:5;position:absolute;margin-left: 15px;margin-top: 90px;width: calc(100vw - 30px);text-align:center;padding:10px 5px;height:126px;">
+        <h1 id="pauseText" style="margin-top:30px;">GAME PAUSED</h1>
+      </div>
+    </ion-pane>
+
     <!-- Game View -->
     <ion-pane id="gameView">
 
@@ -327,7 +377,7 @@
       <div id="btnList" style="z-index:3;flex-grow:100;padding:0;display:flex;flex-direction:row;justify-content:space-between;" class="item item-text-wrap">
       </div>
 
-      <button>Pause</button>
+      <button id="pauseBtn">Pause</button>
 
     </ion-pane>
 

@@ -79,9 +79,36 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       })
     }
 
+    function showPause () {
+      stopTimer()
+      document.querySelector('.pauseScreen').classList.add('becomeVisible')
+      document.querySelector('.pauseScreen').addEventListener('click', hidePause)
+      console.log('Showing pause screen')
+    }
+
+    function hidePause () {
+      document.querySelector('.pauseScreen').removeEventListener('click', hidePause)
+      var pauseText = document.querySelector('#pauseText')
+      setTimeout(function () { pauseText.textContent = 'STARTING' }, 100)
+
+      document.querySelector('.pauseScreen').classList.add('vanishSlow')
+
+      document.querySelector('.pauseScreen').addEventListener('animationend', function () {
+        console.log('Hiding pause screen animation end')
+        document.querySelector('.pauseScreen').classList.remove('becomeVisible', 'vanishSlow')
+        pauseText.textContent = 'GAME PAUSED'
+        document.querySelector('.pauseScreen').removeEventListener('animationend')
+      })
+
+      btnDisplay.addEventListener('click', startTimer)
+    }
+
     function startNewRound () {
       // Set a random colour and colour name to quizWord
       generateQuizword()
+
+      document.querySelector('#pauseBtn').addEventListener('click', showPause)
+
       console.log('NEW ROUND | ' + quizWord.textContent + ' set to ' + quizWord.style.color)
 
       // Shuffle the buttons up, clear the window, then add them to btnDisplay
@@ -121,10 +148,10 @@ angular.module('starter', ['ionic', 'ionic.utils'])
           quizWordColour = rainbowList[Math.floor(Math.random() * rainbowList.length)]
         } else {
           var r = Math.floor((Math.random() * 194) + 1) + 60
-  	      var g = Math.floor((Math.random() * 194) + 1) + 60
-		      var b = Math.floor((Math.random() * 194) + 1) + 60
+          var g = Math.floor((Math.random() * 194) + 1) + 60
+          var b = Math.floor((Math.random() * 194) + 1) + 60
 
-          var colour = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+          var colour = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
           // var colour = Math.floor(Math.random() * 4815162342).toString(16)
           quizWordColour = '#' + ('000000' + colour).slice(-6)
         }
@@ -179,7 +206,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         isRainbowRound ? quizStats.points += 7 : quizStats.points += 1
         quizPointsDisplay.textContent = quizStats.points
         quizPointsDisplay.classList.add('boomsz')
-        setTimeout(function() { quizPointsDisplay.classList.remove('boomsz') }, 100)
+        setTimeout(function () { quizPointsDisplay.classList.remove('boomsz') }, 100)
 
         // reset to isRainbowRound flag must come before determineLevel when flag is determined again
         isRainbowRound = false
@@ -208,14 +235,14 @@ angular.module('starter', ['ionic', 'ionic.utils'])
 
       if (quizStats.points >= (quizLevel * 20)) {
         quizLevel = quizLevel + 1
-        console.log('Increased to Level '+quizLevel)
+        console.log('Increased to Level ' + quizLevel)
 
         flipCoin() === 1 ? isRainbowRound = true : isRainbowRound = false
         console.log('Next round is a rainbow round:' + isRainbowRound)
 
         levelDisplay.textContent = quizLevel
         levelDisplay.classList.add('boomsz')
-        setTimeout(function() { levelDisplay.classList.remove('boomsz') }, 100)
+        setTimeout(function () { levelDisplay.classList.remove('boomsz') }, 100)
 
         if (quizLevel === 2) { countdownSpeed = 0.06; countdownAdd = 1.4 }
         if (quizLevel === 3) { countdownSpeed = 0.07; countdownAdd = 1.4 }
@@ -250,19 +277,21 @@ angular.module('starter', ['ionic', 'ionic.utils'])
 
     function stopGame () {
       document.querySelector('body').removeEventListener('click', startTimer)
+      document.querySelector('#pauseBtn').removeEventListener('click', showPause)
       stopTimer()
       gameOver.classList.add('appearFast', 'becomeVisible')
       checkHighscore()
       document.querySelector('#loseModalScore b').textContent = quizStats.points
       gameOver.addEventListener('animationend', function () {
         gameOver.addEventListener('click', hideGameOver)
-        console.log ('Adding event listener to hideGameOver')
+        console.log('Adding event listener to hideGameOver')
       })
     }
 
     function hideGameOver () {
       gameOver.classList.remove('appearFast', 'becomeVisible')
       gameOver.removeEventListener('click', hideGameOver)
+      stopTimer()
       resetRound()
       resetGame()
       startNewRound()
@@ -293,16 +322,18 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         })
       }
       timerBar.value = timeLeft
-      console.log('Setting timer bar value to '+timeLeft)
+      console.log('Setting timer bar value to ' + timeLeft)
     }
 
     function startTimer () {
+      console.log('Starting timer')
       btnDisplay.removeEventListener('click', startTimer)
-      countdown = setInterval(roundTimer, 50)
+      countdown = window.setInterval(roundTimer, 50)
     }
 
     function stopTimer () {
-      clearInterval(countdown)
+      console.log('Stopping Timer')
+      window.clearInterval(countdown)
     }
 
     function resetGame () {

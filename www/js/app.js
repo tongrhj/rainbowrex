@@ -81,9 +81,38 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       });
     }
 
+    function showPause() {
+      stopTimer();
+      document.querySelector('.pauseScreen').classList.add('becomeVisible');
+      document.querySelector('.pauseScreen').addEventListener('click', hidePause);
+      console.log('Showing pause screen');
+    }
+
+    function hidePause() {
+      document.querySelector('.pauseScreen').removeEventListener('click', hidePause);
+      var pauseText = document.querySelector('#pauseText');
+      setTimeout(function () {
+        pauseText.textContent = 'STARTING';
+      }, 100);
+
+      document.querySelector('.pauseScreen').classList.add('vanishSlow');
+
+      document.querySelector('.pauseScreen').addEventListener('animationend', function () {
+        console.log('Hiding pause screen animation end');
+        document.querySelector('.pauseScreen').classList.remove('becomeVisible', 'vanishSlow');
+        pauseText.textContent = 'GAME PAUSED';
+        document.querySelector('.pauseScreen').removeEventListener('animationend');
+      });
+
+      btnDisplay.addEventListener('click', startTimer);
+    }
+
     function startNewRound() {
       // Set a random colour and colour name to quizWord
       generateQuizword();
+
+      document.querySelector('#pauseBtn').addEventListener('click', showPause);
+
       console.log('NEW ROUND | ' + quizWord.textContent + ' set to ' + quizWord.style.color);
 
       // Shuffle the buttons up, clear the window, then add them to btnDisplay
@@ -128,7 +157,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
           var g = Math.floor(Math.random() * 194 + 1) + 60;
           var b = Math.floor(Math.random() * 194 + 1) + 60;
 
-          var colour = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+          var colour = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
           // var colour = Math.floor(Math.random() * 4815162342).toString(16)
           quizWordColour = '#' + ('000000' + colour).slice(-6);
         }
@@ -278,6 +307,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
 
     function stopGame() {
       document.querySelector('body').removeEventListener('click', startTimer);
+      document.querySelector('#pauseBtn').removeEventListener('click', showPause);
       stopTimer();
       gameOver.classList.add('appearFast', 'becomeVisible');
       checkHighscore();
@@ -291,6 +321,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     function hideGameOver() {
       gameOver.classList.remove('appearFast', 'becomeVisible');
       gameOver.removeEventListener('click', hideGameOver);
+      stopTimer();
       resetRound();
       resetGame();
       startNewRound();
@@ -325,12 +356,14 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     }
 
     function startTimer() {
+      console.log('Starting timer');
       btnDisplay.removeEventListener('click', startTimer);
-      countdown = setInterval(roundTimer, 50);
+      countdown = window.setInterval(roundTimer, 50);
     }
 
     function stopTimer() {
-      clearInterval(countdown);
+      console.log('Stopping Timer');
+      window.clearInterval(countdown);
     }
 
     function resetGame() {
