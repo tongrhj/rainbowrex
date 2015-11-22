@@ -10,14 +10,17 @@ An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 npm install
 ```
 
-## To build local server with watch HTML and CSS
+## Development
 
-```bash
-$ ionic serve
+```
+npm run dev
 ```
 
 ## Product Roadmap:
+1. Port to iOS
+1. Colorblind friendly EMOJI mode
+
+### Recently Implement Features
 1. Implement watchify and browserify for JS into ionic serve command
-2. Overhaul UI
-3. Include loading splashscreen for Android app
-4. Port to iOS
+1. Overhaul UI
+1. Include loading splashscreen for Android app
