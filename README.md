@@ -1,6 +1,8 @@
 Rainbow Rex
 =====================
 
+[![Join the chat at https://gitter.im/tongrhj/rainbowrex](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tongrhj/rainbowrex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 [Play in Browser](http://rainbowrex.herokuapp.com)
 
