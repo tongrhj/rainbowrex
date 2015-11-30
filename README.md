@@ -6,6 +6,8 @@ Rainbow Rex
 An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 [Play in Browser](http://rainbowrex.herokuapp.com)
 
+![Rainbow Rex Screenshot](https://lh3.googleusercontent.com/O7fvBAJ_knaILjTDMg1pOJiDCktcK1rbsmhA6-3TDtryZ54jtWY6-UGsEuNrIIGPyUA=h900-rw)
+
 ## To Install
 
 ```
