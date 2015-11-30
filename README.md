@@ -10,16 +10,10 @@ An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 
 ![Rainbow Rex Screenshot](https://lh3.googleusercontent.com/O7fvBAJ_knaILjTDMg1pOJiDCktcK1rbsmhA6-3TDtryZ54jtWY6-UGsEuNrIIGPyUA=h900-rw)
 
-## To Install
-
-```
-npm install
-```
-
 ## Development
 
 ```
-npm run dev
+npm start
 ```
 
 ## Product Roadmap:
