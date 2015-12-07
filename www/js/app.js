@@ -1,4 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 angular.module('ionic.utils', []).factory('$localStorage', ['$window', function ($window) {
@@ -18,7 +17,7 @@ angular.module('ionic.utils', []).factory('$localStorage', ['$window', function 
   };
 }]);
 
-angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController', function ($scope, $ionicModal, $localStorage) {
+angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('MainController', function ($scope, $ionicModal, $localStorage, $cordovaSocialSharing, $cordovaScreenshot) {
   $scope.initGame = function (event) {
     var quizStats = {
       'points': 0,
@@ -59,6 +58,7 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     var splashscreen = document.querySelector('.splashscreen');
 
     var gameOver = document.querySelector('.gameOver');
+    var newGameBtn = document.querySelector('#newGameBtn');
 
     // Reset Displays
     quizPointsDisplay.textContent = 0;
@@ -313,14 +313,14 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       checkHighscore();
       document.querySelector('#loseModalScore b').textContent = quizStats.points;
       gameOver.addEventListener('animationend', function () {
-        gameOver.addEventListener('click', hideGameOver);
-        console.log('Adding event listener to hideGameOver');
+        newGameBtn.addEventListener('click', hideGameOver);
+        console.log('Adding event listener to new game button');
       });
     }
 
     function hideGameOver() {
       gameOver.classList.remove('appearFast', 'becomeVisible');
-      gameOver.removeEventListener('click', hideGameOver);
+      newGameBtn.removeEventListener('click', hideGameOver);
       stopTimer();
       resetRound();
       resetGame();
@@ -388,18 +388,12 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
       // var quizLevel = quizStats.level
 
       highscore = $localStorage.get('highscore') || null;
-      timerBar = document.querySelector('#timerBar');
-      levelDisplay = document.querySelector('#levelDisplay');
       countdownSpeed = 0.05;
       countdownAdd = 1;
       quizWordColour = null;
       isRainbowRound = false;
       btnOrder = null;
       previousQuizWord = null;
-
-      splashscreen = document.querySelector('.splashscreen');
-
-      gameOver = document.querySelector('.gameOver');
 
       // Reset Displays
       quizPointsDisplay.textContent = 0;
@@ -414,8 +408,45 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     startSplashscreen();
   };
 
+  $scope.shareAnywhere = function () {
+    console.log('Sharing using native dialog');
+
+    $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com");
+  };
+
+  $scope.shareViaTwitter = function (message, image, link) {
+    $cordovaSocialSharing.canShareVia('twitter', message, image, link).then(function (result) {
+      $cordovaSocialSharing.shareViaTwitter(message, image, link);
+    }, function (error) {
+      alert("Cannot share on Twitter");
+    });
+  };
+
+  $scope.screenCapture = function () {
+    console.log('Taking screenshot');
+    $cordovaScreenshot.capture().then(function (res) {
+      $cordovaSocialSharing.share('Check out my new highscore on Rainbow Rex!', null, 'file://' + res, 'http://rainbow.jaredt.xyz');
+    });
+  };
+
   $scope.initGame();
-}).run(function ($ionicPlatform) {
+}).factory('$cordovaScreenshot', ['$q', function ($q) {
+  return {
+    capture: function capture() {
+      var q = $q.defer();
+      navigator.screenshot.save(function (error, res) {
+        if (error) {
+          console.error(error);
+          q.reject(error);
+        } else {
+          console.log('screenshot capture ok: ', res.filePath);
+          q.resolve(res.filePath);
+        }
+      }, 'jpg', 80);
+      return q.promise;
+    }
+  };
+}]).run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -425,5 +456,3 @@ angular.module('starter', ['ionic', 'ionic.utils']).controller('MainController',
     }
   });
 });
-
-},{}]},{},[1]);

@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('ionic.utils', []).factory('$localStorage', ['$window', function ($window) {
+angular.module('ionic.utils', [])
+.factory('$localStorage', ['$window', function ($window) {
   return {
     set: function set (key, value) {
       $window.localStorage[key] = value
@@ -17,8 +18,8 @@ angular.module('ionic.utils', []).factory('$localStorage', ['$window', function 
   }
 }])
 
-angular.module('starter', ['ionic', 'ionic.utils'])
-.controller('MainController', function ($scope, $ionicModal, $localStorage) {
+angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
+.controller('MainController', function ($scope, $ionicModal, $localStorage, $cordovaSocialSharing, $cordovaScreenshot) {
   $scope.initGame = function (event) {
     var quizStats = {
       'points': 0,
@@ -45,8 +46,8 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     // var quizLevel = quizStats.level
 
     var highscore = $localStorage.get('highscore') || null
-    var timerBar = document.querySelector('#timerBar')
-    var levelDisplay = document.querySelector('#levelDisplay')
+    const timerBar = document.querySelector('#timerBar')
+    const levelDisplay = document.querySelector('#levelDisplay')
     var countdownSpeed = 0.05
     var countdownAdd = 1
     var quizWordColour
@@ -54,9 +55,10 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     var btnOrder
     var previousQuizWord = null
 
-    var splashscreen = document.querySelector('.splashscreen')
+    const splashscreen = document.querySelector('.splashscreen')
 
-    var gameOver = document.querySelector('.gameOver')
+    const gameOver = document.querySelector('.gameOver')
+    const newGameBtn = document.querySelector('#newGameBtn')
 
     // Reset Displays
     quizPointsDisplay.textContent = 0
@@ -72,7 +74,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       splashscreen.removeEventListener('click')
       splashscreen.classList.add('vanishFast')
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast')
-      splashscreen.addEventListener('animationend', function () {
+      splashscreen.addEventListener('animationend', () => {
         splashscreen.classList.remove('vanishFast')
         splashscreen.parentNode.removeChild(splashscreen)
         console.log('Splashscreen vanished')
@@ -89,7 +91,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     function hidePause () {
       document.querySelector('.pauseScreen').removeEventListener('click', hidePause)
       var pauseText = document.querySelector('#pauseText')
-      setTimeout(function () { pauseText.textContent = 'STARTING' }, 100)
+      setTimeout(() => { pauseText.textContent = 'STARTING' }, 100)
 
       document.querySelector('.pauseScreen').classList.add('vanishSlow')
 
@@ -206,7 +208,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
         isRainbowRound ? quizStats.points += 7 : quizStats.points += 1
         quizPointsDisplay.textContent = quizStats.points
         quizPointsDisplay.classList.add('boomsz')
-        setTimeout(function () { quizPointsDisplay.classList.remove('boomsz') }, 100)
+        setTimeout(() => { quizPointsDisplay.classList.remove('boomsz') }, 100)
 
         // reset to isRainbowRound flag must come before determineLevel when flag is determined again
         isRainbowRound = false
@@ -242,7 +244,7 @@ angular.module('starter', ['ionic', 'ionic.utils'])
 
         levelDisplay.textContent = quizLevel
         levelDisplay.classList.add('boomsz')
-        setTimeout(function () { levelDisplay.classList.remove('boomsz') }, 100)
+        setTimeout(() => { levelDisplay.classList.remove('boomsz') }, 100)
 
         if (quizLevel === 2) { countdownSpeed = 0.06; countdownAdd = 1.4 }
         if (quizLevel === 3) { countdownSpeed = 0.07; countdownAdd = 1.4 }
@@ -283,14 +285,14 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       checkHighscore()
       document.querySelector('#loseModalScore b').textContent = quizStats.points
       gameOver.addEventListener('animationend', function () {
-        gameOver.addEventListener('click', hideGameOver)
-        console.log('Adding event listener to hideGameOver')
+        newGameBtn.addEventListener('click', hideGameOver)
+        console.log('Adding event listener to new game button')
       })
     }
 
     function hideGameOver () {
       gameOver.classList.remove('appearFast', 'becomeVisible')
-      gameOver.removeEventListener('click', hideGameOver)
+      newGameBtn.removeEventListener('click', hideGameOver)
       stopTimer()
       resetRound()
       resetGame()
@@ -358,18 +360,12 @@ angular.module('starter', ['ionic', 'ionic.utils'])
       // var quizLevel = quizStats.level
 
       highscore = $localStorage.get('highscore') || null
-      timerBar = document.querySelector('#timerBar')
-      levelDisplay = document.querySelector('#levelDisplay')
       countdownSpeed = 0.05
       countdownAdd = 1
       quizWordColour = null
       isRainbowRound = false
       btnOrder = null
       previousQuizWord = null
-
-      splashscreen = document.querySelector('.splashscreen')
-
-      gameOver = document.querySelector('.gameOver')
 
       // Reset Displays
       quizPointsDisplay.textContent = 0
@@ -384,9 +380,53 @@ angular.module('starter', ['ionic', 'ionic.utils'])
     startSplashscreen()
   }
 
+  $scope.shareAnywhere = () => {
+    console.log('Sharing using native dialog')
+
+    $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com")
+  }
+
+  $scope.shareViaTwitter = (message, image, link) => {
+    $cordovaSocialSharing.canShareVia('twitter', message, image, link).then((result) => {
+      $cordovaSocialSharing.shareViaTwitter(message, image, link)
+    }, (error) => {
+      alert("Cannot share on Twitter")
+    })
+  }
+
+  $scope.screenCapture = () => {
+    console.log('Taking screenshot')
+    $cordovaScreenshot.capture()
+    .then((res) => {
+      console.log(res)
+      $cordovaSocialSharing.share('Check out my new highscore on Rainbow Rex!', null, 'file://' + res, 'http://rainbow.jaredt.xyz')
+    })
+
+  }
+
   $scope.initGame()
-}).run(function ($ionicPlatform) {
-  $ionicPlatform.ready(function () {
+})
+
+.factory('$cordovaScreenshot', ['$q', function ($q) {
+  return {
+    capture: function () {
+      var q = $q.defer()
+      navigator.screenshot.save((error, res) => {
+        if (error) {
+          console.error(error)
+          q.reject(error)
+        } else {
+          console.log('screenshot capture ok: ', res.filePath)
+          q.resolve(res.filePath)
+        }
+      }, 'jpg', 80)
+      return q.promise
+    }
+  }
+}])
+
+.run(function ($ionicPlatform) {
+  $ionicPlatform.ready(() => {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true)
     }

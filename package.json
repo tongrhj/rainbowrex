@@ -1,8 +1,9 @@
 {
   "name": "rainbowRex",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Addictive, fast-paced Colour Picker Game by Jared Tong",
   "scripts": {
+    "start": "ionic serve",
     "dev": "npm run gulp && npm run watch-js & ionic serve",
     "gulp": "gulp",
     "watch-js": "watchify js/app.js --outfile www/js/app.js --transform babelify --verbose"
@@ -31,7 +32,12 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-x-socialsharing",
+    {
+      "locator": "https://github.com/gitawego/cordova-screenshot.git",
+      "id": "com.darktalker.cordova.screenshot"
+    }
   ],
   "cordovaPlatforms": [
     "android"
