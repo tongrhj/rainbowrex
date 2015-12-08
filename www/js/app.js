@@ -425,6 +425,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
   $scope.screenCapture = function () {
     console.log('Taking screenshot');
     $cordovaScreenshot.capture().then(function (res) {
+      console.log(res);
       $cordovaSocialSharing.share('Check out my new highscore on Rainbow Rex!', null, 'file://' + res, 'http://rainbow.jaredt.xyz');
     });
   };
