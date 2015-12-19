@@ -12,9 +12,9 @@ var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['sass', 'copy-images', 'babel']);
+gulp.task('default', ['sass', 'watch', 'copy-images', 'babel']);
 
-gulp.task('sass', function(done) {
+gulp.task('sass', function() {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
     .on('error', sass.logError)
@@ -24,12 +24,10 @@ gulp.task('sass', function(done) {
     }))
     .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('./www/css/'))
-    .on('end', done);
 });
 
 gulp.task('copy-images', function() {
-    gulp.src('./img/*.png')
-    // Perform minification tasks, etc here
+  gulp.src('./img/*.png')
     .pipe(gulp.dest('./www/img/'))
 });
 

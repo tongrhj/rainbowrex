@@ -21,3 +21,303 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+body {
+  letter-spacing: -2px;
+  line-height: 0.75em;
+}
+
+#btnList {
+  button {
+    width:100%;
+    cursor:pointer;
+    border: none;
+    border-radius: 0px;
+    opacity: 1;
+    &:active { opacity: 0.7 };
+  }
+}
+
+progress {
+  background: #EEE;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+  border-radius: 3px;
+  border: 3px solid rgba(0,0,0,0.7);
+}
+
+progress#timerBar[value] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 40vw;
+  height: 30px;
+  &::-webkit-progress-value {
+    transition: width 5s ease;
+    background-color: #f44;
+    border-radius: 3px;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+    -webkit-transition : width 0.1s linear;
+    -moz-transition : width 0.1s linear;
+      -o-transition : width 0.1s linear;
+         transition : width 0.1s linear, background-color 0.1s;
+  }
+}
+
+progress#timerBar.whitebg[value]::-webkit-progress-value {
+  background-color: #fff;
+}
+
+// $colors: (
+//   blue: #007dc6,
+//   red: #D75548,
+//   yellow: #f8ee42,
+//   orange: #f89327,
+//   green: #5AA159,
+//   pink: #fa6f83,
+//   purple: #9f65dd
+// );
+//
+// @mixin rainbowColors($colorName) {
+//   background-color: map-get($colors, $colorName);
+//   border-color: map-get($colors, $colorName);
+// }
+//
+// @each $btn-color in red, blue, yellow, orange, green, pink, purple {
+//   .button-#{$btn-color} {
+//     @include rainbowColors($btn-color)
+//   }
+// }
+
+.button-red{background-color: #D75548;border-color: #D75548;}
+.button-blue{background-color: #5D86C4;border-color: #5D86C4;}
+.button-yellow{background-color: #f8ee42;border-color: #f8ee42;}
+.button-orange{background-color: #f89327;border-color: #f89327;}
+.button-green{background-color: #5AA159;border-color: #5AA159;}
+.button-pink{background-color: #fa6f83;border-color: #fa6f83;}
+.button-purple{background-color: #9f65dd;border-color: #9f65dd;}
+
+.modal-backdrop-bg {
+  -webkit-transition: opacity 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out;
+  background-color: #fff;
+  opacity: 0;
+}
+
+.active .modal-backdrop-bg {
+  opacity: 0.5;
+}
+
+.modal {
+  width: 90vw;
+  min-height: 50vh;
+  left: 5vw;
+  top: 20vh;
+  border-radius: 50%;
+  border: 10px solid black;
+}
+
+.gameOver,
+.splashscreen,
+.pauseScreen {
+  display: block;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  overflow: hidden;
+  min-height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.70);
+}
+
+.pane.gameOver,
+.pane.pauseScreen {
+  display:none;
+  opacity:0;
+  transition: opacity 100ms ease;
+}
+
+.becomeVisible {
+  display: block !important;
+  opacity:100 !important;
+}
+
+.splashscreen {
+  h1 {
+  font-size:4em;
+  font-weight:700;
+  }
+  img {
+    position: absolute;
+  }
+}
+
+.rexBox {
+  position: absolute;
+  right: 10px;
+  bottom: 50px;
+  z-index: 100;
+  width:200px;
+  height:100px;
+}
+
+.rexLegs {
+  position:absolute;
+  /*top: calc(40vh + 145px/3 );
+  left:calc(10vw + 400px/6);*/
+  z-index:20;
+  width: 47px;
+  bottom:0;
+  right:80px;
+  height: calc(100px /3);
+  background: url('../img/rexlegssprite.png') left center;
+  background-size: 400%;
+  animation: moveLegs 600ms steps(4) infinite;
+}
+
+@keyframes moveLegs {
+   100% { background-position: 568px; }
+}
+
+.rexBody {
+  animation: 1s ease infinite bodyBounce;
+  bottom: 13px;
+  z-index:21;
+  width: calc(467px /3);
+  height: calc(205px /3);
+}
+
+.rainbow {
+  width:2000px;
+  height:50px;
+  z-index: 11;
+  bottom:0;
+  background-size: 50% auto;
+  background-image: -webkit-linear-gradient( left, #D75548, #f89327, #f8ee42, #5AA159, #5D86C4, #9f65dd, #fa6f83, #D75548 );
+  animation: wheeeee 1200ms linear infinite forwards;
+  opacity: 1;
+  position: absolute;
+}
+
+.vanishFast {
+ animation: vanish 300ms ease;
+}
+
+.vanishSlow {
+ animation: vanish 1000ms ease;
+}
+
+.appearFast {
+ animation: appear 300ms ease;
+}
+
+@keyframes bodyBounce {
+  0% { transform: translateY(6px); }
+  50% { transform: translateY(0px); }
+  100% { transform: translateY(6px); }
+}
+
+@keyframes wheeeee {
+  from { background-position: top left; }
+  to { background-position: top right; }
+}
+
+@keyframes appear {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes vanish {
+  from { opacity: 1}
+  to { opacity: 0 }
+}
+
+@keyframes slideOutBottom {
+  from { transform: translateY(0px) }
+  to { transform: translateY(300px) }
+}
+
+#gameView {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+}
+
+.finalScoreDisplay {
+  text-align:center;
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+  background-color: black;
+  color: white;
+  position: absolute;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 200px);
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.finalScoreDisplay h1,
+.finalScoreDisplay h3 {
+  color: white;
+  vertical-align: middle;
+}
+
+#gameView h2 {
+  font-size: 22px;
+  color: white;
+}
+
+.rexOnRainbow {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.slideOutFast {
+  animation: slideOutBottom 300ms linear;
+}
+
+.boomsz {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+}
+
+#levelDisplay,
+#quizPoints {
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+}
+
+#gameView h2#quizPoints {
+  text-shadow: 0 2px 1px rgba(0,0,0,0.2),0 -2px 1px rgba(0,0,0,0.1);
+  color: #f1ebe5;
+  font-weight: 700;
+  font-size: 40px;
+}
+
+#pauseBtn {
+  position:absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 15px;
+  right: 15px;
+  z-index:5;
+  border: none;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 50%;
+  text-indent: -9999px;
+  cursor:pointer;
+  &:before,
+  &:after {
+    width: 6px;
+    height: 15px;
+    background: #fff;
+    position: absolute;
+    content: "";
+    top: 17px;
+  }
+  &:before { left: 15px; }
+  &:after { right: 15px; }
+}

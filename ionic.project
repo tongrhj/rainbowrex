@@ -2,7 +2,6 @@
   "name": "rainbowRex",
   "app_id": "67cdf046",
   "gulpStartupTasks": [
-    "babel",
-    "copy-images"
+    "default"
   ]
 }
