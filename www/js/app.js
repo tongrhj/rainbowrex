@@ -71,12 +71,14 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     }
 
     function removeSplashscreen() {
-      splashscreen.removeEventListener('click');
       splashscreen.classList.add('vanishFast');
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast');
       splashscreen.addEventListener('animationend', function () {
+        splashscreen.removeEventListener('click', removeSplashscreen);
+        if (splashscreen.parentNode) {
+          splashscreen.parentNode.removeChild(splashscreen);
+        }
         splashscreen.classList.remove('vanishFast');
-        splashscreen.parentNode.removeChild(splashscreen);
         console.log('Splashscreen vanished');
       });
     }
@@ -97,12 +99,14 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
 
       document.querySelector('.pauseScreen').classList.add('vanishSlow');
 
-      document.querySelector('.pauseScreen').addEventListener('animationend', function () {
+      document.querySelector('.pauseScreen').addEventListener('animationend', animateHidePause);
+
+      function animateHidePause () {
         console.log('Hiding pause screen animation end');
         document.querySelector('.pauseScreen').classList.remove('becomeVisible', 'vanishSlow');
         pauseText.textContent = 'GAME PAUSED';
-        document.querySelector('.pauseScreen').removeEventListener('animationend');
-      });
+        document.querySelector('.pauseScreen').removeEventListener('animationend', animateHidePause);
+      }
 
       btnDisplay.addEventListener('click', startTimer);
     }

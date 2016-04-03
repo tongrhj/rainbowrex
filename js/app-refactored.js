@@ -86,9 +86,39 @@ class Game {
     this.btnDisplay.addEventListener('click', this.startTimer)
   }
 
+  findBtnMatch (quizWord) {
+    switch (quizWord.textContent) {
+      case 'red':
+        this.answerBtn = document.querySelector('.button-red')
+        break
+      case 'yellow':
+        this.answerBtn = document.querySelector('.button-yellow')
+        break
+      case 'green':
+        this.answerBtn = document.querySelector('.button-green')
+        break
+      case 'blue':
+        this.answerBtn = document.querySelector('.button-blue')
+        break
+      case 'orange':
+        this.answerBtn = document.querySelector('.button-orange')
+        break
+      case 'pink':
+        this.answerBtn = document.querySelector('.button-pink')
+        break
+      case 'purple':
+        this.answerBtn = document.querySelector('.button-purple')
+        break
+      default:
+        break
+    }
+    console.log('Answer: ' + this.answerBtn)
+    return this.answerBtn
+  }
+
   startNewRound () {
     // Set a random colour and colour name to quizWord
-    this.generateQuizword()
+    generateQuizword()
     console.log('NEW ROUND | ' + this.quizWord.textContent + ' set to ' + this.quizWord.style.color)
     // Initalize pauseBtn
     this.pauseBtn.addEventListener('click', this.showPause)
@@ -96,7 +126,7 @@ class Game {
     this.isRainbowRound ? this.btnOrder = shuffle(this.rainbowList) : this.btnOrder = shuffle(this.quizWordList)
     this.btnDisplay.innerHTML = ''
     this.btnOrder.forEach(createBtn)
-    this.answerBtn = findBtnMatch(this.quizWord)
+    this.answerBtn = this.findBtnMatch(this.quizWord)
     this.btnDisplay.addEventListener('click', this.checkAnswer, false)
 
     function createBtn (colourClass) {
@@ -104,6 +134,7 @@ class Game {
       btn.classList.add('button-' + colourClass)
       this.btnDisplay.appendChild(btn)
     }
+
     function shuffle (array) {
       var currentIndex = array.length, temporaryValue, randomIndex
       // While there remain elements to shuffle...
@@ -118,29 +149,28 @@ class Game {
       }
       return array
     }
+
     function generateQuizword () {
-      if (quizLevel >= 3 && !isRainbowRound) {
-        quizWordColour = quizWordList[Math.floor(Math.random() * quizWordList.length)]
-      } else if (isRainbowRound) {
-        quizWordColour = rainbowList[Math.floor(Math.random() * rainbowList.length)]
+      if (this.quizLevel >= 3 && !this.isRainbowRound) {
+        this.quizWordColour = this.quizWordList[Math.floor(Math.random() * this.quizWordList.length)]
+      } else if (this.isRainbowRound) {
+        this.quizWordColour = this.rainbowList[Math.floor(Math.random() * this.rainbowList.length)]
       } else {
-        var r = Math.floor((Math.random() * 194) + 1) + 60
-        var g = Math.floor((Math.random() * 194) + 1) + 60
-        var b = Math.floor((Math.random() * 194) + 1) + 60
-
-        var colour = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+        const r = Math.floor((Math.random() * 194) + 1) + 60
+        const g = Math.floor((Math.random() * 194) + 1) + 60
+        const b = Math.floor((Math.random() * 194) + 1) + 60
+        const colour = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
         // var colour = Math.floor(Math.random() * 4815162342).toString(16)
-        quizWordColour = '#' + ('000000' + colour).slice(-6)
+        this.quizWordColour = '#' + ('000000' + colour).slice(-6)
       }
-      quizWord.style.color = quizWordColour
-      isRainbowRound ? quizWord.textContent = rainbowList[Math.floor(Math.random() * rainbowList.length)] : quizWord.textContent = quizWordList[Math.floor(Math.random() * quizWordList.length)]
-      if (quizWord.style.color === quizWord.textContent || previousQuizWord === quizWord.textContent) {
-        generateQuizword()
+      this.quizWord.style.color = this.quizWordColour
+      this.isRainbowRound ? this.quizWord.textContent = this.rainbowList[Math.floor(Math.random() * this.rainbowList.length)] : this.quizWord.textContent = this.quizWordList[Math.floor(Math.random() * this.quizWordList.length)]
+      if (this.quizWord.style.color === this.quizWord.textContent || this.previousQuizWord === this.quizWord.textContent) {
+        this.generateQuizword()
       }
-      previousQuizWord = quizWord.textContent
+      this.previousQuizWord = this.quizWord.textContent
     }
-
-
+  }
 }
 
 
@@ -166,55 +196,7 @@ class Game {
 
 
 
-    // Reset Displays
-    quizPointsDisplay.textContent = 0
-    updateTimerBar()
-    levelDisplay.textContent = quizLevel
 
-    function
-
-    function
-
-    function
-
-    function
-
-      // Helper Functions for startNewRound
-
-
-
-    }
-
-    function findBtnMatch (quizWord) {
-      switch (quizWord.textContent) {
-        case 'red':
-          answerBtn = document.querySelector('.button-red')
-          break
-        case 'yellow':
-          answerBtn = document.querySelector('.button-yellow')
-          break
-        case 'green':
-          answerBtn = document.querySelector('.button-green')
-          break
-        case 'blue':
-          answerBtn = document.querySelector('.button-blue')
-          break
-        case 'orange':
-          answerBtn = document.querySelector('.button-orange')
-          break
-        case 'pink':
-          answerBtn = document.querySelector('.button-pink')
-          break
-        case 'purple':
-          answerBtn = document.querySelector('.button-purple')
-          break
-        default:
-          break
-      }
-      console.log('Answer: ')
-      console.log(answerBtn)
-      return answerBtn
-    }
 
     function checkAnswer (event) {
       var btnClicked = event.target
