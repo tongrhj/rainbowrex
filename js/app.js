@@ -1,3 +1,4 @@
+/* global ionic angular cordova StatusBar */
 'use strict'
 
 angular.module('ionic.utils', [])
@@ -71,13 +72,14 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
     }
 
     function removeSplashscreen () {
-      splashscreen.removeEventListener('click')
       splashscreen.classList.add('vanishFast')
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast')
       splashscreen.addEventListener('animationend', () => {
+        splashscreen.removeEventListener('click', removeSplashscreen)
         splashscreen.classList.remove('vanishFast')
-        splashscreen.parentNode.removeChild(splashscreen)
-        console.log('Splashscreen vanished')
+        if (splashscreen.parentNode) {
+          splashscreen.parentNode.removeChild(splashscreen)
+        }
       })
     }
 
@@ -95,12 +97,13 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
 
       document.querySelector('.pauseScreen').classList.add('vanishSlow')
 
-      document.querySelector('.pauseScreen').addEventListener('animationend', function () {
-        console.log('Hiding pause screen animation end')
+      document.querySelector('.pauseScreen').addEventListener('animationend', animateHidePause)
+
+      function animateHidePause () {
         document.querySelector('.pauseScreen').classList.remove('becomeVisible', 'vanishSlow')
         pauseText.textContent = 'GAME PAUSED'
-        document.querySelector('.pauseScreen').removeEventListener('animationend')
-      })
+        document.querySelector('.pauseScreen').removeEventListener('animationend', animateHidePause)
+      }
 
       btnDisplay.addEventListener('click', startTimer)
     }
@@ -129,7 +132,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
 
       // Helper Functions for startNewRound
       function shuffle (array) {
-        var currentIndex = array.length, temporaryValue, randomIndex
+        var currentIndex = array.length
+        var temporaryValue
+        var randomIndex
         // While there remain elements to shuffle...
         while (currentIndex !== 0) {
           // Pick a remaining element...
@@ -282,6 +287,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
       document.querySelector('#pauseBtn').removeEventListener('click', showPause)
       stopTimer()
       gameOver.classList.add('appearFast', 'becomeVisible')
+      if (ionic.Platform.isAndroid()) {
+        document.querySelector('#js-android-promolink').classList.add('hidden')
+      }
       checkHighscore()
       document.querySelector('#loseModalScore b').textContent = quizStats.points
       gameOver.addEventListener('animationend', function () {
@@ -380,20 +388,6 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
     startSplashscreen()
   }
 
-  $scope.shareAnywhere = () => {
-    console.log('Sharing using native dialog')
-
-    $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com")
-  }
-
-  $scope.shareViaTwitter = (message, image, link) => {
-    $cordovaSocialSharing.canShareVia('twitter', message, image, link).then((result) => {
-      $cordovaSocialSharing.shareViaTwitter(message, image, link)
-    }, (error) => {
-      alert("Cannot share on Twitter")
-    })
-  }
-
   $scope.screenCapture = () => {
     console.log('Taking screenshot')
     $cordovaScreenshot.capture()
@@ -401,7 +395,6 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova'])
       console.log(res)
       $cordovaSocialSharing.share('Check out my new highscore on Rainbow Rex!', null, 'file://' + res, 'http://rainbow.jaredt.xyz')
     })
-
   }
 
   $scope.initGame()

@@ -9183,6 +9183,11 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.7); }
 
+.gameOver a {
+  text-decoration: none;
+  color: blueviolet;
+  letter-spacing: 0; }
+
 .pane.gameOver,
 .pane.pauseScreen {
   display: none;
@@ -9199,6 +9204,9 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
 
 .splashscreen img {
   position: absolute; }
+
+.hidden {
+  visibility: hidden; }
 
 .rexBox {
   position: absolute;
@@ -9284,6 +9292,12 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
   to {
     transform: translateY(300px); } }
 
+@keyframes rainbowBorder {
+  0% {
+    border-color: red; }
+  100% {
+    border-color: #4000ff; } }
+
 #gameView {
   display: flex;
   flex-direction: column;
@@ -9361,3 +9375,19 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
     left: 15px; }
   #pauseBtn:after {
     right: 15px; }
+
+#newGameBtn {
+  letter-spacing: 0;
+  background: none;
+  border: 4px solid red;
+  border-radius: 8px;
+  animation: rainbowBorder 2s infinite alternate;
+  -webkit-animation: rainbowBorder 5s infinite alternate;
+  background-image: gradient(linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2), color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2), color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
+  font-size: 1.5em;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: 900;
+  padding: 1em; }

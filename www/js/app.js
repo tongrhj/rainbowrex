@@ -1,3 +1,5 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* global ionic angular cordova StatusBar */
 'use strict';
 
 angular.module('ionic.utils', []).factory('$localStorage', ['$window', function ($window) {
@@ -39,15 +41,13 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     var countdown = null;
 
     // Instance of ES6 Destructuring
-    var _quizStats = quizStats;
-    var timeLeft = _quizStats.roundDuration;
-    var quizLevel = _quizStats.level;
+    var { roundDuration: timeLeft, level: quizLevel } = quizStats;
     // var timeLeft = quizStats.roundDuration
     // var quizLevel = quizStats.level
 
     var highscore = $localStorage.get('highscore') || null;
-    var timerBar = document.querySelector('#timerBar');
-    var levelDisplay = document.querySelector('#levelDisplay');
+    const timerBar = document.querySelector('#timerBar');
+    const levelDisplay = document.querySelector('#levelDisplay');
     var countdownSpeed = 0.05;
     var countdownAdd = 1;
     var quizWordColour;
@@ -55,10 +55,10 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     var btnOrder;
     var previousQuizWord = null;
 
-    var splashscreen = document.querySelector('.splashscreen');
+    const splashscreen = document.querySelector('.splashscreen');
 
-    var gameOver = document.querySelector('.gameOver');
-    var newGameBtn = document.querySelector('#newGameBtn');
+    const gameOver = document.querySelector('.gameOver');
+    const newGameBtn = document.querySelector('#newGameBtn');
 
     // Reset Displays
     quizPointsDisplay.textContent = 0;
@@ -73,13 +73,12 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     function removeSplashscreen() {
       splashscreen.classList.add('vanishFast');
       document.querySelector('.rexOnRainbow').classList.add('slideOutFast');
-      splashscreen.addEventListener('animationend', function () {
+      splashscreen.addEventListener('animationend', () => {
         splashscreen.removeEventListener('click', removeSplashscreen);
+        splashscreen.classList.remove('vanishFast');
         if (splashscreen.parentNode) {
           splashscreen.parentNode.removeChild(splashscreen);
         }
-        splashscreen.classList.remove('vanishFast');
-        console.log('Splashscreen vanished');
       });
     }
 
@@ -93,7 +92,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     function hidePause() {
       document.querySelector('.pauseScreen').removeEventListener('click', hidePause);
       var pauseText = document.querySelector('#pauseText');
-      setTimeout(function () {
+      setTimeout(() => {
         pauseText.textContent = 'STARTING';
       }, 100);
 
@@ -101,8 +100,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
 
       document.querySelector('.pauseScreen').addEventListener('animationend', animateHidePause);
 
-      function animateHidePause () {
-        console.log('Hiding pause screen animation end');
+      function animateHidePause() {
         document.querySelector('.pauseScreen').classList.remove('becomeVisible', 'vanishSlow');
         pauseText.textContent = 'GAME PAUSED';
         document.querySelector('.pauseScreen').removeEventListener('animationend', animateHidePause);
@@ -135,9 +133,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
 
       // Helper Functions for startNewRound
       function shuffle(array) {
-        var currentIndex = array.length,
-            temporaryValue,
-            randomIndex;
+        var currentIndex = array.length;
+        var temporaryValue;
+        var randomIndex;
         // While there remain elements to shuffle...
         while (currentIndex !== 0) {
           // Pick a remaining element...
@@ -216,7 +214,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
         isRainbowRound ? quizStats.points += 7 : quizStats.points += 1;
         quizPointsDisplay.textContent = quizStats.points;
         quizPointsDisplay.classList.add('boomsz');
-        setTimeout(function () {
+        setTimeout(() => {
           quizPointsDisplay.classList.remove('boomsz');
         }, 100);
 
@@ -254,7 +252,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
 
         levelDisplay.textContent = quizLevel;
         levelDisplay.classList.add('boomsz');
-        setTimeout(function () {
+        setTimeout(() => {
           levelDisplay.classList.remove('boomsz');
         }, 100);
 
@@ -314,6 +312,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
       document.querySelector('#pauseBtn').removeEventListener('click', showPause);
       stopTimer();
       gameOver.classList.add('appearFast', 'becomeVisible');
+      if (ionic.Platform.isAndroid()) {
+        document.querySelector('#js-android-promolink').classList.add('hidden');
+      }
       checkHighscore();
       document.querySelector('#loseModalScore b').textContent = quizStats.points;
       gameOver.addEventListener('animationend', function () {
@@ -412,23 +413,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     startSplashscreen();
   };
 
-  $scope.shareAnywhere = function () {
-    console.log('Sharing using native dialog');
-
-    $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com");
-  };
-
-  $scope.shareViaTwitter = function (message, image, link) {
-    $cordovaSocialSharing.canShareVia('twitter', message, image, link).then(function (result) {
-      $cordovaSocialSharing.shareViaTwitter(message, image, link);
-    }, function (error) {
-      alert("Cannot share on Twitter");
-    });
-  };
-
-  $scope.screenCapture = function () {
+  $scope.screenCapture = () => {
     console.log('Taking screenshot');
-    $cordovaScreenshot.capture().then(function (res) {
+    $cordovaScreenshot.capture().then(res => {
       console.log(res);
       $cordovaSocialSharing.share('Check out my new highscore on Rainbow Rex!', null, 'file://' + res, 'http://rainbow.jaredt.xyz');
     });
@@ -437,9 +424,9 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
   $scope.initGame();
 }).factory('$cordovaScreenshot', ['$q', function ($q) {
   return {
-    capture: function capture() {
+    capture: function () {
       var q = $q.defer();
-      navigator.screenshot.save(function (error, res) {
+      navigator.screenshot.save((error, res) => {
         if (error) {
           console.error(error);
           q.reject(error);
@@ -452,7 +439,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     }
   };
 }]).run(function ($ionicPlatform) {
-  $ionicPlatform.ready(function () {
+  $ionicPlatform.ready(() => {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
@@ -461,3 +448,5 @@ angular.module('starter', ['ionic', 'ionic.utils', 'ngCordova']).controller('Mai
     }
   });
 });
+
+},{}]},{},[1]);

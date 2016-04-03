@@ -3,7 +3,7 @@ var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
-var minifyCss = require('gulp-minify-css');
+var cleanCSS = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var babel = require('gulp-babel');
@@ -19,9 +19,7 @@ gulp.task('sass', function() {
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(gulp.dest('./www/css/'))
-    .pipe(minifyCss({
-      keepSpecialComments: 0
-    }))
+    .pipe(cleanCSS())
     .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('./www/css/'))
 });
@@ -33,7 +31,9 @@ gulp.task('copy-images', function() {
 
 gulp.task('babel', function(done){
   gulp.src('./js/*.js')
-    .pipe(babel())
+    .pipe(babel({
+			presets: ['es2015']
+		}))
     .pipe(gulp.dest('./www/js/'))
     .on('end', done);
 })

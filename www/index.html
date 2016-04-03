@@ -4,29 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>Rainbow Rex | Colour Picker Game by Jared Tong</title>
-
-    <!-- Indebted to http://colorrun.pl/ and Timberman and Crossy Road -->
     <link href="css/ionic.app.min.css" rel="stylesheet">
-
-    <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="cordova.js"></script>
-
-    <!-- My App's JS -->
     <script src="js/app.js"></script>
-
     <meta property="og:url" content="http://rainbowrex.herokuapp.com">
     <meta property="og:title" content="Rainbow Rex | Colour Picker Game">
     <meta property="og:description" content="An addictive, fast-paced game where you pick the colours you read, not the colours you see">
     <meta property="og:image" content="http://rainbowrex.herokuapp.com/img/facebookshare.png">
     <meta property="og:locale" content="en_GB">
-
   </head>
   <body ng-app="starter" ng-controller="MainController">
-
     <!-- Splashscreen Modal -->
     <ion-pane class="splashscreen">
       <div class="card" style="z-index:4;position:absolute;margin-left: 15px;margin-top: 90px;width: calc(100vw - 30px);padding-bottom:214px;">
@@ -48,14 +37,15 @@
     <!-- Game Over Modal -->
     <ion-pane class="gameOver">
       <div class="card" style="z-index:5;position:absolute;margin-left: 15px;margin-top: calc(90px + 142px);width: calc(100vw - 30px);text-align:center;padding:10px 5px;">
-        <button id="newGameBtn">Start New Game</button>
         <h1 id="loseModalScore">Your Score: <br> <b>0</b></h1>
         <h3 id="loseModalHighscoreLabel">Your Best: </h3><h3 id="loseModalHighscore">0</h3>
         <br>
-        <button ng-click="screenCapture()" style="visibility:hidden;">share</button>
+        <a ng-click="screenCapture()" style="visibility:hidden;" style="color:#0074D9;" id="shareScreenBtn">share</a>
         <!-- <button ng-click="shareViaTwitter(&apos;Check out my Rainbow Rex highscore!&apos;, null, &apos;http://rainbow.jaredt.xyz&apos;)">Share on Twitter</button> -->
         <br>
-        <h4><a href="https://play.google.com/store/apps/details?id=com.sotonggames.rainbowrex&amp;hl=en" style="text-decoration:none;color:blueviolet;letter-spacing:0;">Now available on Google Play! (free)</a></h4>
+        <button id="newGameBtn">Start New Game</button>
+        <br>
+        <h4 id="js-android-promolink"><a href="https://play.google.com/store/apps/details?id=com.sotonggames.rainbowrex&amp;hl=en">Now available on Google Play! (free)</a></h4>
       </div>
     </ion-pane>
 

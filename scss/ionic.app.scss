@@ -127,6 +127,12 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
   background-color: rgba(255, 255, 255, 0.70);
 }
 
+.gameOver a {
+  text-decoration:none;
+  color: blueviolet;
+  letter-spacing:0;
+}
+
 .pane.gameOver,
 .pane.pauseScreen {
   display:none;
@@ -147,6 +153,10 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
   img {
     position: absolute;
   }
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .rexBox {
@@ -232,6 +242,11 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
 @keyframes slideOutBottom {
   from { transform: translateY(0px) }
   to { transform: translateY(300px) }
+}
+
+@keyframes rainbowBorder {
+  0% {border-color: hsl(0, 100%, 50%);}
+  100% {border-color: hsl(255, 100%, 50%);}
 }
 
 #gameView {
@@ -320,4 +335,21 @@ progress#timerBar.whitebg[value]::-webkit-progress-value {
   }
   &:before { left: 15px; }
   &:after { right: 15px; }
+}
+
+#newGameBtn {
+  letter-spacing:0;
+  background:none;
+  border: 4px solid hsl(0, 100%, 50%);
+  border-radius: 8px;
+  animation: rainbowBorder 2s infinite alternate;
+  -webkit-animation: rainbowBorder 5s infinite alternate;
+  background-image: gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
+  font-size: 1.5em;
+  color:transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: 900;
+  padding: 1em;
 }

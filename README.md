@@ -13,7 +13,16 @@ An addictive, fast-paced :rainbow: colour picker game by @tongrhj
 ## Development
 
 ```
-npm start
+npm install && npm dev
+```
+
+## Deployment to Android
+See Instructions here: http://ionicframework.com/docs/guide/publishing.html
+```
+// Alias for keystore: jaredtong
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -tsa http://timestamp.digicert.com -keystore my-release-key.keystore android-release-unsigned.apk jaredtong
+// To zipalign
+~/Library/Android/sdk/build-tools/23.0.2/zipalign -v 4 android-release-unsigned.apk rainbowRex.apk
 ```
 
 ## Product Roadmap:
