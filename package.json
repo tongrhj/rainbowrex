@@ -3,7 +3,6 @@
   "version": "0.0.9",
   "description": "Addictive, fast-paced Colour Picker Game by Jared Tong",
   "scripts": {
-    "start": "ionic serve",
     "dev": "gulp & npm run watch-js & ionic serve",
     "watch-js": "watchify js/app.js --outfile www/js/app.js --transform babelify --verbose",
     "test": "standard js/app.js"
