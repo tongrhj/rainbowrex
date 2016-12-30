@@ -12,18 +12,18 @@
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
     "gulp-rename": "^1.2.0",
-    "gulp-sass": "^2.0.4"
+    "gulp-sass": "^3.0.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.1.18",
     "babelify": "^7.2.0",
     "bower": "^1.3.3",
-    "browserify": "^12.0.1",
+    "browserify": "^13.1.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean-css": "^2.0.4",
-    "gulp-util": "^2.2.14",
-    "ionic": "^1.7.14",
-    "shelljs": "^0.3.0",
+    "gulp-util": "^3.0.8",
+    "ionic": "^2.1.18",
+    "shelljs": "^0.7.5",
     "watchify": "^3.6.0"
   },
   "cordovaPlugins": [
